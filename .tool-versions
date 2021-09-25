@@ -1,0 +1,3 @@
+# Matching GitHub's virtual environment for `ubuntu-latest` as at 25 September 2021.
+# see: https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
+nodejs 14.17.6
