@@ -1,0 +1,2 @@
+# Environment local to developer's workstation, containing secrets.
+.env
