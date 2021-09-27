@@ -40,9 +40,11 @@ async function audit() {
     },
   });
 
-  const query = `{
+  // The type of $previousEndCursor is explicitly `String`, not `String!`. This is because we intentionally supply
+  // a value of `null` on our first query.
+  const query = `query repositories($previousEndCursor: String) {
     organization(login: "ably") {
-      repositories(first: 100) {
+      repositories(first: 100, after: $previousEndCursor) {
         nodes {
           name,
           defaultBranchRef {
@@ -50,16 +52,33 @@ async function audit() {
           },
           visibility
         }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
       }
     }
   }`;
 
-  // TODO handle pagination (we're specifying maximum allowed `first: 100` in the query)
-  const { organization } = await graphqlWithAuth(query);
-  const repositoryNodes = organization.repositories.nodes;
-  repositoryNodes.forEach((repository) => {
-    const { visibility, name, defaultBranchRef } = repository;
-    // defaultBranchRef will be null here if nothing has been pushed to this repository yet
-    console.log(`${visibility} - ${name}: ${defaultBranchRef ? defaultBranchRef.name : '?'}`);
-  });
+  let needToQuery = true;
+  let previousEndCursor = null;
+  let repositoryCount = 0;
+  while (needToQuery) {
+    const variables = { previousEndCursor };
+    const { organization } = await graphqlWithAuth(query, variables); // eslint-disable-line no-await-in-loop
+
+    const repositoryNodes = organization.repositories.nodes;
+    repositoryNodes.forEach((repository) => {
+      const { visibility, name, defaultBranchRef } = repository;
+      // defaultBranchRef will be null here if nothing has been pushed to this repository yet
+      console.log(`${visibility} - ${name}: ${defaultBranchRef ? defaultBranchRef.name : '?'}`);
+    });
+    repositoryCount += repositoryNodes.length;
+
+    const { pageInfo } = organization.repositories;
+    previousEndCursor = pageInfo.endCursor;
+    needToQuery = pageInfo.hasNextPage;
+  }
+
+  console.log(`Repository Count: ${repositoryCount}`);
 }
