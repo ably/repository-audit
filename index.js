@@ -4,22 +4,24 @@ const { graphql } = require('@octokit/graphql');
 
 require('dotenv').config();
 
-const githubAppId = process.env.GITHUB_APP_ID;
-const githubAppClientId = process.env.GITHUB_APP_CLIENT_ID;
-const githubAppClientSecret = process.env.GITHUB_APP_CLIENT_SECRET;
-const githubAppInstallationId = process.env.GITHUB_APP_INSTALLATION_ID;
+const {
+  APP_ID,
+  APP_CLIENT_ID,
+  APP_CLIENT_SECRET,
+  APP_INSTALLATION_ID,
+} = process.env;
 
 (async () => {
-  const privatePem = await fs.readFile('github-app-private-key.pem', 'ascii');
+  const privatePem = await fs.readFile('app-private-key.pem', 'ascii');
 
   // https://github.com/octokit/auth-app.js/#authenticate-as-installation
   // https://docs.github.com/en/rest/reference/apps#create-an-installation-access-token-for-an-app
   const auth = createAppAuth({
-    appId: githubAppId,
+    appId: APP_ID,
     privateKey: privatePem,
-    clientId: githubAppClientId,
-    clientSecret: githubAppClientSecret,
-    installationId: githubAppInstallationId,
+    clientId: APP_CLIENT_ID,
+    clientSecret: APP_CLIENT_SECRET,
+    installationId: APP_INSTALLATION_ID,
   });
 
   const graphqlWithAuth = graphql.defaults({
