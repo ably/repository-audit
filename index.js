@@ -58,7 +58,8 @@ async function audit() {
   const { organization } = await graphqlWithAuth(query);
   const repositoryNodes = organization.repositories.nodes;
   repositoryNodes.forEach((repository) => {
-    // TODO work out why we get this here: TypeError: Cannot read property 'name' of null
-    console.log(`${repository.visibility} - ${repository.name}: ${repository.defaultBranchRef.name}`);
+    const { visibility, name, defaultBranchRef } = repository;
+    // defaultBranchRef will be null here if nothing has been pushed to this repository yet
+    console.log(`${visibility} - ${name}: ${defaultBranchRef ? defaultBranchRef.name : '?'}`);
   });
 }
