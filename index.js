@@ -8,7 +8,7 @@ const {
   APP_ID,
   APP_CLIENT_ID,
   APP_CLIENT_SECRET,
-  APP_INSTALLATION_ID,
+  APP_INSTALLATION_ID_ABLY,
 } = process.env;
 
 (async () => {
@@ -21,7 +21,7 @@ const {
     privateKey: privatePem,
     clientId: APP_CLIENT_ID,
     clientSecret: APP_CLIENT_SECRET,
-    installationId: APP_INSTALLATION_ID,
+    installationId: APP_INSTALLATION_ID_ABLY,
   });
 
   const graphqlWithAuth = graphql.defaults({
