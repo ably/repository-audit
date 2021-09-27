@@ -11,7 +11,17 @@ const {
   APP_INSTALLATION_ID_ABLY,
 } = process.env;
 
+// Entry Point
 (async () => {
+  try {
+    await audit();
+  } catch (error) {
+    console.error(error);
+    process.exit(2);
+  }
+})();
+
+async function audit() {
   const privatePem = await fs.readFile('app-private-key.pem', 'ascii');
 
   // https://github.com/octokit/auth-app.js/#authenticate-as-installation
@@ -51,4 +61,4 @@ const {
     // TODO work out why we get this here: TypeError: Cannot read property 'name' of null
     console.log(`${repository.visibility} - ${repository.name}: ${repository.defaultBranchRef.name}`);
   });
-})();
+}
