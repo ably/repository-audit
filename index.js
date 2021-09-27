@@ -1,6 +1,8 @@
-const fs = require('fs').promises;
+const fs = require('fs');
+const path = require('path');
 const { createAppAuth } = require('@octokit/auth-app');
 const { graphql } = require('@octokit/graphql');
+const MarkdownWriter = require('./markdown').Writer;
 
 require('dotenv').config();
 
@@ -22,7 +24,7 @@ const {
 })();
 
 async function audit() {
-  const privatePem = await fs.readFile('app-private-key.pem', 'ascii');
+  const privatePem = await fs.promises.readFile('app-private-key.pem', 'ascii');
 
   // https://github.com/octokit/auth-app.js/#authenticate-as-installation
   // https://docs.github.com/en/rest/reference/apps#create-an-installation-access-token-for-an-app
@@ -60,18 +62,38 @@ async function audit() {
     }
   }`;
 
+  // Keys define check names and Values define their descriptions.
+  const checks = {
+    A: 'Validates that there is a default branch and it is called `main`.',
+    B: 'Validates that there is a branch protection rule defined for the `main` branch.',
+  };
+  const checkCodes = Object.getOwnPropertyNames(checks).sort();
+
+  // Create empty arrays and maps for results collection.
+  const publicRepositoryNames = [];
+  const privateRepositoryNames = [];
+  const checkResults = new Map(); // e.g. { 'ably-js': { A: true, B: false } }
+
+  // Run the asynchronous query / queries.
+  let queryCount = 0;
   let needToQuery = true;
   let previousEndCursor = null;
   let repositoryCount = 0;
   while (needToQuery) {
+    queryCount += 1;
+    console.log(`Executing Query #${queryCount}...`);
     const variables = { previousEndCursor };
     const { organization } = await graphqlWithAuth(query, variables); // eslint-disable-line no-await-in-loop
 
     const repositoryNodes = organization.repositories.nodes;
     repositoryNodes.forEach((repository) => {
       const { visibility, name, defaultBranchRef } = repository;
-      // defaultBranchRef will be null here if nothing has been pushed to this repository yet
-      console.log(`${visibility} - ${name}: ${defaultBranchRef ? defaultBranchRef.name : '?'}`);
+
+      (visibility === 'PUBLIC' ? publicRepositoryNames : privateRepositoryNames).push(name);
+      checkResults.set(name, {
+        A: defaultBranchRef?.name === 'main',
+        B: false, // TODO
+      });
     });
     repositoryCount += repositoryNodes.length;
 
@@ -80,5 +102,36 @@ async function audit() {
     needToQuery = pageInfo.hasNextPage;
   }
 
-  console.log(`Repository Count: ${repositoryCount}`);
+  console.log(`Queried Repository Count: ${repositoryCount}`);
+
+  function repositoryResultCells(name) {
+    const results = checkResults.get(name);
+    const resultCells = checkCodes.map((code) => `:${results[code] ? 'green' : 'red'}_circle:`);
+    return [name].concat(resultCells);
+  }
+
+  const resultHeaderCells = ['Repository'].concat(checkCodes);
+
+  const directoryName = 'output';
+  const fileName = 'ably.md';
+  if (!fs.existsSync(directoryName)) {
+    fs.mkdirSync(directoryName);
+  }
+  const md = new MarkdownWriter(fs.createWriteStream(path.join(directoryName, fileName)));
+
+  md.h(1, 'Repository Audit for `ably`');
+
+  md.h(2, 'Public Repositories');
+  md.tableHead(resultHeaderCells);
+  publicRepositoryNames.sort().forEach((name) => {
+    md.tableBodyLine(repositoryResultCells(name));
+  });
+
+  md.h(2, 'Private Repositories');
+  md.tableHead(resultHeaderCells);
+  privateRepositoryNames.sort().forEach((name) => {
+    md.tableBodyLine(repositoryResultCells(name));
+  });
+
+  md.end();
 }

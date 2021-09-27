@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run Audit
+
+      - name: Run Audit and Generate Report
         env:
           APP_CLIENT_SECRET: ${{ secrets.APP_CLIENT_SECRET }}
           APP_ID: ${{ secrets.APP_ID }}
@@ -22,3 +23,15 @@ jobs:
           npm ci
           echo "$APP_PRIVATE_KEY" > app-private-key.pem
           node .
+
+      - name: Publish Report
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
+          chmod 400 ssh-private-key.pem
+          eval $(ssh-agent -s)
+          ssh-add ssh-private-key.pem
+          git config --global user.name "Ably Repository Audit [bot]"
+          git config --global user.email "ably-repository-audit[bot]@noreply.ably.com"
+          scripts/publish.sh
