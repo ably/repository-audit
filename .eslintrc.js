@@ -12,5 +12,11 @@ module.exports = {
   },
   rules: {
     'no-console': ['off'],
+    'max-len': ['off'],
+    'no-use-before-define': ['off'],
+
+    // This rule was complaing at: require('jose/jwt/sign')
+    // Even though the code was executing fine.
+    'import/no-unresolved': ['off'],
   },
 };
