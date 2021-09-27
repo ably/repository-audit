@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const { createAppAuth } = require('@octokit/auth-app');
+const { graphql } = require('@octokit/graphql');
 
 require('dotenv').config();
 
@@ -18,13 +19,34 @@ const githubAppInstallationId = process.env.GITHUB_APP_INSTALLATION_ID;
     privateKey: privatePem,
     clientId: githubAppClientId,
     clientSecret: githubAppClientSecret,
-  });
-
-  // Retrieve installation access token
-  const installationAuthentication = await auth({
-    type: 'installation',
     installationId: githubAppInstallationId,
   });
 
-  console.log(`Auth:\n${installationAuthentication}`);
+  const graphqlWithAuth = graphql.defaults({
+    request: {
+      hook: auth.hook,
+    },
+  });
+
+  const query = `{
+    organization(login: "ably") {
+      repositories(first: 100) {
+        nodes {
+          name,
+          defaultBranchRef {
+            name
+          },
+          visibility
+        }
+      }
+    }
+  }`;
+
+  // TODO handle pagination (we're specifying maximum allowed `first: 100` in the query)
+  const { organization } = await graphqlWithAuth(query);
+  const repositoryNodes = organization.repositories.nodes;
+  repositoryNodes.forEach((repository) => {
+    // TODO work out why we get this here: TypeError: Cannot read property 'name' of null
+    console.log(`${repository.visibility} - ${repository.name}: ${repository.defaultBranchRef.name}`);
+  });
 })();
