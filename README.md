@@ -1,5 +1,7 @@
 # Ably SDK Team Repository Audit
 
+[![.github/workflows/check.yml](https://github.com/ably/repository-audit/actions/workflows/check.yml/badge.svg)](https://github.com/ably/repository-audit/actions/workflows/check.yml)
+
 ## Overview
 
 Audit. Monitor. Conform.
