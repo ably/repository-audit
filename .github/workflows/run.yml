@@ -1,0 +1,24 @@
+# This is a manually triggered workflow (hence on: workflow_dispatch).
+# See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#manual-events
+
+# The expectation is that this workflow will be run periodically in future, once the code has settled.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Audit
+        env:
+          APP_CLIENT_SECRET: ${{ secrets.APP_CLIENT_SECRET }}
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_CLIENT_ID: ${{ secrets.APP_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+          APP_INSTALLATION_ID_ABLY: ${{ secrets.APP_INSTALLATION_ID_ABLY }}
+        run: |
+          npm ci
+          echo "$APP_PRIVATE_KEY" > app-private-key.pem
+          node .
