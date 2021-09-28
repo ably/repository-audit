@@ -55,6 +55,22 @@ async function audit() {
             name
           },
           visibility
+          branchProtectionRules(first: 100) {
+            nodes {
+              requiredApprovingReviewCount
+              requiresApprovingReviews
+              requiresConversationResolution
+              requiresStatusChecks
+              requiresStrictStatusChecks
+              restrictsPushes
+              pattern
+              allowsDeletions
+              allowsForcePushes
+            }
+            pageInfo {
+              hasNextPage
+            }
+          }
         }
         pageInfo {
           endCursor
@@ -96,7 +112,7 @@ async function audit() {
       (visibility === 'PUBLIC' ? publicRepositoryNames : privateRepositoryNames).push(name);
       checkResults.set(name, {
         A: checks.defaultBranchName(),
-        B: 'yellow', // TODO
+        B: checks.branchProtectionRuleForDefaultBranch(),
       });
     });
     repositoryCount += repositoryNodes.length;
