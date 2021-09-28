@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # A script to publish the generated report to the downstream GitHub repository.
-# `node .` will need to have been run first, creating the `output` folder.
+# `node .` will need to have been run first, creating the `output/report` folder.
 #
 # The script assumes there's an SSH key available with read/write permissions
 # to the downstream repository, and thus uses SSH URLs.
@@ -32,7 +32,7 @@ publish() {
   git clone git@github.com:ably/repository-audit-report "${repo}"
 
   info "Copying generated report files to repository clone..."
-  cp output/*.md "${repo}"
+  cp output/report/*.md "${repo}"
 
   # check there are some changes to publish
   cd "${repo}"

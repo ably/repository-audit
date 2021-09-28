@@ -112,12 +112,16 @@ async function audit() {
 
   const resultHeaderCells = ['Repository'].concat(checkCodes);
 
-  const directoryName = 'output';
+  // Create output directory in standard location within working directory.
+  // The expectation is that this tool is run from the root of the repository.
+  const outputDirectoryName = 'output';
+  const reportDirectoryName = path.join(outputDirectoryName, 'report');
   const fileName = 'ably.md';
-  if (!fs.existsSync(directoryName)) {
-    fs.mkdirSync(directoryName);
+  if (!fs.existsSync(reportDirectoryName)) {
+    fs.mkdirSync(reportDirectoryName, { recursive: true });
   }
-  const md = new MarkdownWriter(fs.createWriteStream(path.join(directoryName, fileName)));
+
+  const md = new MarkdownWriter(fs.createWriteStream(path.join(reportDirectoryName, fileName)));
 
   md.h(1, 'Repository Audit for `ably`');
 
