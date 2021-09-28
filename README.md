@@ -57,19 +57,17 @@ Creation and installation of a deploy key involves the following steps:
 
 Using `ssh-keygen` on your local machine - e.g.:
 
-    ssh-keygen -t ed25519 -C "ably-repository-audit[bot]@noreply.ably.com"
+    ssh-keygen -f /tmp/ably-deploy-key -t ed25519 -C "ably-repository-audit[bot]@noreply.ably.com"
 
 Contrary to the instructions in
 [GitHub's server-configuration-oriented documentation](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key),
 leave the passphrase empty.
 
-For this illustration, given there were no existing Ed25519 key pairs in my `.ssh` folder, I accepted the default file location to save the key.
-
 #### 2. Install public key
 
 Copy file contents to clipboard:
 
-    cat ~/.ssh/id_ed25519.pub| pbcopy
+    cat /tmp/ably-deploy-key.pub | pbcopy
 
 Navigate to the downstream repository's 'Deploy keys' in 'Settings'
 ([here](https://github.com/ably/repository-audit-report/settings/keys))
@@ -83,7 +81,7 @@ Enter something logical for 'Title' - e.g.: `repository-audit publish key`
 
 Copy file contents to clipboard:
 
-    cat ~/.ssh/id_ed25519| pbcopy
+    cat /tmp/ably-deploy-key | pbcopy
 
 Navigate to this repository's 'Secrets' for 'Actions' in 'Settings'
 ([here](https://github.com/ably/repository-audit/settings/secrets/actions))
@@ -98,6 +96,6 @@ Provide the name expected by the workflow into 'Name' - i.e.: `ABLY_REPOSITORY_A
 Delete the key pair from your local workstation:
 
 ```
-rm ~/.ssh/id_ed25519
-rm ~/.ssh/id_ed25519.pub
+rm /tmp/ably-deploy-key
+rm /tmp/ably-deploy-key.pub
 ```
