@@ -44,7 +44,7 @@ publish() {
 
   info "Pushing changes back to origin..."
   git add .
-  git commit -m "Update report."
+  git commit --file=output/commit-message.txt
   git push origin main
 }
 
