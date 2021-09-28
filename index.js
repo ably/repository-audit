@@ -132,7 +132,8 @@ async function audit() {
     return [interactiveName].concat(resultCells);
   }
 
-  const resultHeaderCells = ['Repository'].concat(checkCodes);
+  const interactiveCodes = checkCodes.map((code) => `[${code}](#check-${code.toLowerCase()})`);
+  const resultHeaderCells = ['Repository'].concat(interactiveCodes);
 
   // Create output directory in standard location within working directory.
   // The expectation is that this tool is run from the root of the repository.
@@ -173,6 +174,12 @@ async function audit() {
   md.tableHead(resultHeaderCells);
   privateRepositoryNames.sort().forEach((name) => {
     md.tableBodyLine(repositoryResultCells(name));
+  });
+
+  md.h(2, 'Checks');
+  checkCodes.forEach((code) => {
+    md.h(3, `Check: ${code}`);
+    md.line(checkDescriptions[code]);
   });
 
   await md.end();
