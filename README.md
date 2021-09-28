@@ -19,14 +19,14 @@ This tool needs a private key for the GitHub App in order to sign access token r
 That private key is created and downloaded, in PEM format, from the 'Private keys' area with the app's 'General' settings.
 This tool expects that file to be at:
 
-    github-app-private-key.pem
+    app-private-key.pem
 
 This tool also requires the following to be available in the process' environment:
 
-- **`GITHUB_APP_ID`**: Number. The 'App ID' available under 'About' in 'General' settings for the GitHub App.
-- **`GITHUB_APP_CLIENT_ID`**: String. The 'Client ID' available under 'About' in 'General' settings for the GitHub App.
-- **`GITHUB_APP_CLIENT_SECRET`**: String. A 'Client secret' generated under 'Client secrets' in 'General' settings for the GitHub App.
-- **`GITHUB_APP_INSTALLATION_ID`**: Number. The `installation_id` for the GitHub App within the `ably` org, available in the browser's address bar (end of URL with prefix `https://github.com/organizations/ably/settings/installations/`) if you click 'Configure' under 'Installed GitHub Apps` in org settings.
+- **`APP_ID`**: Number. The 'App ID' available under 'About' in 'General' settings for the GitHub App.
+- **`APP_CLIENT_ID`**: String. The 'Client ID' available under 'About' in 'General' settings for the GitHub App.
+- **`APP_CLIENT_SECRET`**: String. A 'Client secret' generated under 'Client secrets' in 'General' settings for the GitHub App.
+- **`APP_INSTALLATION_ID_ABLY`**: Number. The `installation_id` for the GitHub App within the `ably` org, available in the browser's address bar (end of URL with prefix `https://github.com/organizations/ably/settings/installations/`) if you click 'Configure' under 'Installed GitHub Apps` in org settings.
 
 ## Miscellaneous Notes
 
