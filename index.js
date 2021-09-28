@@ -110,7 +110,8 @@ async function audit() {
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
     const resultCells = checkCodes.map((code) => `:${results[code] ? 'green' : 'red'}_circle:`);
-    return [name].concat(resultCells);
+    const interactiveName = `[${name}](https://github.com/ably/${name})`;
+    return [interactiveName].concat(resultCells);
   }
 
   const resultHeaderCells = ['Repository'].concat(checkCodes);
