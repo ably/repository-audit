@@ -49,4 +49,7 @@ class Repository {
 
 module.exports = {
   Repository,
+  PASS,
+  FAIL,
+  WARN,
 };
