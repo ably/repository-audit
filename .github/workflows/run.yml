@@ -4,7 +4,18 @@
 # The expectation is that this workflow will be run periodically in future, once the code has settled.
 
 on:
+  # allow us to run this workflow manually when required - for example to update the report after changes have been
+  # made to repository configurations
   workflow_dispatch:
+
+  # always run this workflow when we push commits to the default branch
+  push:
+    branches:
+      - main
+
+  # run against the latest commit on the default branch daily at just before 6am
+  schedule:
+    - cron: '55 5 * * *'
 
 jobs:
   audit:

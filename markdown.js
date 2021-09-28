@@ -44,8 +44,14 @@ class Writer {
     this.lastLineHadSpaceAround = spaceAround;
   }
 
-  end() {
-    this.writeStream.end();
+  async end() {
+    const stream = this.writeStream;
+    await new Promise((resolve) => {
+      stream.on('finish', () => {
+        resolve();
+      });
+      stream.end();
+    });
   }
 }
 
