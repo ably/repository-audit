@@ -4,6 +4,7 @@ const childProcess = require('child_process');
 const { createAppAuth } = require('@octokit/auth-app');
 const { graphql } = require('@octokit/graphql');
 const MarkdownWriter = require('./markdown').Writer;
+const RepositoryChecks = require('./checks').Repository;
 
 require('dotenv').config();
 
@@ -64,16 +65,16 @@ async function audit() {
   }`;
 
   // Keys define check names and Values define their descriptions.
-  const checks = {
+  const checkDescriptions = {
     A: 'Validates that there is a default branch and it is called `main`.',
     B: 'Validates that there is a branch protection rule defined for the `main` branch.',
   };
-  const checkCodes = Object.getOwnPropertyNames(checks).sort();
+  const checkCodes = Object.getOwnPropertyNames(checkDescriptions).sort();
 
   // Create empty arrays and maps for results collection.
   const publicRepositoryNames = [];
   const privateRepositoryNames = [];
-  const checkResults = new Map(); // e.g. { 'ably-js': { A: true, B: false } }
+  const checkResults = new Map(); // e.g. { 'ably-js': { A: 'green', B: 'red' } }
 
   // Run the asynchronous query / queries.
   const startDate = new Date();
@@ -89,12 +90,13 @@ async function audit() {
 
     const repositoryNodes = organization.repositories.nodes;
     repositoryNodes.forEach((repository) => {
-      const { visibility, name, defaultBranchRef } = repository;
+      const { visibility, name } = repository;
+      const checks = new RepositoryChecks(repository);
 
       (visibility === 'PUBLIC' ? publicRepositoryNames : privateRepositoryNames).push(name);
       checkResults.set(name, {
-        A: defaultBranchRef?.name === 'main',
-        B: false, // TODO
+        A: checks.defaultBranchName(),
+        B: 'yellow', // TODO
       });
     });
     repositoryCount += repositoryNodes.length;
@@ -109,7 +111,7 @@ async function audit() {
 
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
-    const resultCells = checkCodes.map((code) => `:${results[code] ? 'green' : 'red'}_circle:`);
+    const resultCells = checkCodes.map((code) => `:${results[code]}_circle:`);
     const interactiveName = `[${name}](https://github.com/ably/${name})`;
     return [interactiveName].concat(resultCells);
   }
