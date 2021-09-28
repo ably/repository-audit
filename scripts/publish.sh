@@ -17,6 +17,9 @@ set -e
 TMPDIR="$(mktemp -d)"
 trap "rm -rf ${TMPDIR}" EXIT
 
+# WORKDIR is expected to be the repository root
+WORKDIR="$(pwd)"
+
 # main runs the main logic of the program
 main() {
   publish
@@ -44,7 +47,7 @@ publish() {
 
   info "Pushing changes back to origin..."
   git add .
-  git commit --file=output/commit-message.txt
+  git commit "--file=${WORKDIR}/output/commit-message.txt"
   git push origin main
 }
 
