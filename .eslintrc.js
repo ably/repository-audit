@@ -18,5 +18,6 @@ module.exports = {
     'no-console': ['off'],
     'max-len': ['off'],
     'no-use-before-define': ['off'],
+    'max-classes-per-file': ['off'],
   },
 };
