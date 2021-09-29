@@ -65,6 +65,8 @@ const pass = () => new Result(PASS);
 const fail = (description) => new Result(FAIL, description);
 const warn = (description) => new Result(WARN, description);
 
+const NO_DEFAULT_BRANCH_REF_MESSAGE = 'There is no default branch defined, probably indicating this repository is empty.';
+
 class Repository {
   constructor(repository) {
     this.repository = repository;
@@ -76,7 +78,7 @@ class Repository {
    */
   defaultBranchName() {
     const { defaultBranchRef } = this.repository;
-    if (!defaultBranchRef) return WARN; // nothing pushed to repository yet
+    if (!defaultBranchRef) return warn(NO_DEFAULT_BRANCH_REF_MESSAGE);
     const { name } = defaultBranchRef;
     switch (defaultBranchRef.name) {
       case 'main':
@@ -95,7 +97,7 @@ class Repository {
    */
   branchProtectionRuleForDefaultBranch() {
     const { defaultBranchRef, branchProtectionRules } = this.repository;
-    if (!defaultBranchRef) return fail('There is no default branch defined, probably indicating this repository is empty.');
+    if (!defaultBranchRef) return warn(NO_DEFAULT_BRANCH_REF_MESSAGE);
     if (!branchProtectionRules) return fail('There are no branch protection rules defined.');
     if (branchProtectionRules.pageInfo.hasNextPage) return fail('There are more branch protection rules defined for this repository than this tool\'s simplistic GraphQL implementation can handle.');
 
