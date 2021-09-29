@@ -127,7 +127,7 @@ async function audit() {
 
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
-    const resultCells = checkCodes.map((code) => `:${results[code]}_circle:`);
+    const resultCells = checkCodes.map((code) => results[code].emoji);
     const interactiveName = `[${name}](https://github.com/ably/${name})`;
     return [interactiveName].concat(resultCells);
   }
