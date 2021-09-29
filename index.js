@@ -83,7 +83,7 @@ async function audit() {
   // Keys define check names and Values define their descriptions.
   const checkDescriptions = {
     A: 'Validates that there is a default branch and it is called `main`.',
-    B: 'Validates that there is a branch protection rule defined for the `main` branch.',
+    B: 'Validates that there is a branch protection rule defined for the default branch and that it has been configured correctly.',
   };
   const checkCodes = Object.getOwnPropertyNames(checkDescriptions).sort();
 
