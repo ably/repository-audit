@@ -45,3 +45,66 @@ The naming of these secrets, in particular the need to avoid the `GITHUB_` prefi
 
 - [Security Guides: Encrypted secrets: Naming your secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#naming-your-secrets):
 - [Learn GitHub Actions: Environment variables: Default environment variables](https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables)
+
+### Deploy Key for Downstream Repository
+
+The [run workflow](.github/workflows/run.yml) publishes updates to the report as a Git commit to the downstream repository
+[ably/repository-audit-report](https://github.com/ably/repository-audit-report)
+(private, only visible to teams within the `ably` org).
+
+In order to do this it uses the `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY` secret.
+
+Creation and installation of a deploy key involves the following steps:
+
+#### 1. Generate the key pair
+
+Using `ssh-keygen` on your local machine - e.g.:
+
+    ssh-keygen -f /tmp/ably-deploy-key -t ed25519 -C "ably-repository-audit[bot]@noreply.ably.com"
+
+Contrary to the instructions in
+[GitHub's server-configuration-oriented documentation](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key),
+leave the passphrase empty.
+
+#### 2. Install public key
+
+Copy file contents to clipboard:
+
+    cat /tmp/ably-deploy-key.pub | pbcopy
+
+Navigate to the
+[downstream repository](https://github.com/ably/repository-audit-report)'s
+'Deploy keys' in 'Settings'
+([here](https://github.com/ably/repository-audit-report/settings/keys),
+requires `Admin`
+[permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
+and click 'Add deploy key'.
+
+Paste your clipboard contents into 'Key'.
+
+Enter something logical for 'Title' - e.g.: `repository-audit publish key`
+
+#### 3. Install private key
+
+Copy file contents to clipboard:
+
+    cat /tmp/ably-deploy-key | pbcopy
+
+Navigate to this repository's 'Secrets' for 'Actions' in 'Settings'
+([here](https://github.com/ably/repository-audit/settings/secrets/actions),
+requires `Admin`
+[permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
+and click 'New repository secret'.
+
+Paste your clipboard contents into 'Value'.
+
+Provide the name expected by the workflow into 'Name' - i.e.: `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
+
+#### 4. Cleanup locally
+
+Delete the key pair from your local workstation:
+
+```
+rm /tmp/ably-deploy-key
+rm /tmp/ably-deploy-key.pub
+```
