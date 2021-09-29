@@ -21,6 +21,10 @@ class Result {
   get emoji() {
     return `:${this.indication}_circle:`;
   }
+
+  get isPass() {
+    return this.indication === PASS;
+  }
 }
 
 class ResultList {

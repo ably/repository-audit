@@ -127,7 +127,12 @@ async function audit() {
 
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
-    const resultCells = checkCodes.map((code) => results[code].emoji);
+    const resultCells = checkCodes.map((code) => {
+      // Render as a link if it wasn't a PASS.
+      const result = results[code];
+      const { emoji, isPass } = result;
+      return isPass ? emoji : `[${emoji}](#${name.toLowerCase()}-check-${code.toLowerCase()})`;
+    });
     const interactiveName = `[${name}](https://github.com/ably/${name})`;
     return [interactiveName].concat(resultCells);
   }
@@ -180,6 +185,20 @@ async function audit() {
   checkCodes.forEach((code) => {
     md.h(3, `Check: ${code}`);
     md.line(checkDescriptions[code]);
+  });
+
+  md.h(2, 'Failure Details');
+  const allRepositoryNames = publicRepositoryNames.concat(privateRepositoryNames).sort();
+  allRepositoryNames.forEach((name) => {
+    const results = checkResults.get(name);
+    checkCodes.forEach((code) => {
+      // Only create a section if it wasn't a PASS.
+      const result = results[code];
+      if (!result.isPass) {
+        md.h(3, `\`${name}\` check ${code}`);
+        md.line(`${result.emoji} ${result.description}`);
+      }
+    });
   });
 
   await md.end();
