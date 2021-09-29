@@ -69,8 +69,12 @@ Copy file contents to clipboard:
 
     cat /tmp/ably-deploy-key.pub | pbcopy
 
-Navigate to the downstream repository's 'Deploy keys' in 'Settings'
-([here](https://github.com/ably/repository-audit-report/settings/keys))
+Navigate to the
+[downstream repository](https://github.com/ably/repository-audit-report)'s
+'Deploy keys' in 'Settings'
+([here](https://github.com/ably/repository-audit-report/settings/keys),
+requires `Admin`
+[permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
 and click 'Add deploy key'.
 
 Paste your clipboard contents into 'Key'.
@@ -84,7 +88,9 @@ Copy file contents to clipboard:
     cat /tmp/ably-deploy-key | pbcopy
 
 Navigate to this repository's 'Secrets' for 'Actions' in 'Settings'
-([here](https://github.com/ably/repository-audit/settings/secrets/actions))
+([here](https://github.com/ably/repository-audit/settings/secrets/actions),
+requires `Admin`
+[permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
 and click 'New repository secret'.
 
 Paste your clipboard contents into 'Value'.
