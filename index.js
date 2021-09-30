@@ -153,7 +153,7 @@ async function audit() {
   }
 
   // Write commit message.
-  const sha = github.sh;
+  const { sha } = github;
   const branch = childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
   const commitMessage = fs.createWriteStream(path.join(outputDirectoryName, 'commit-message.txt'));
   commitMessage.write(`Generate report at ${startDate.toISOString()}.\n\n`);
