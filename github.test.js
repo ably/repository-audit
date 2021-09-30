@@ -1,22 +1,24 @@
+const { format: prettyFormat } = require('pretty-format');
+
 const { GitHub } = require('./github');
 
 const github = (env) => new GitHub(env);
 
 describe('constructor', () => {
-  describe.each([
-    [undefined],
-    [null],
-    ['hello'], // string primitive
-    [true], // boolean primitive
-    [false], // boolean primitive
-    [0], // number primitive
-    [1], // number primitive
-    [-1], // number primitive
-    [3.14159265359], // number primitive
-    [Symbol('bar')], // symbol primitive
-    [BigInt('0b11111111111111111111111111111111111111111111111111111')], // bigint primitive
-  ])('process environment argument is %p', (badEnv) => {
-    it('fails by throwing error', () => {
+  ([
+    undefined,
+    null,
+    'hello', // string primitive
+    true, // boolean primitive
+    false, // boolean primitive
+    0, // number primitive
+    1, // number primitive
+    -1, // number primitive
+    3.14159265359, // number primitive
+    Symbol('bar'), // symbol primitive
+    BigInt('0b11111111111111111111111111111111111111111111111111111'), // bigint primitive
+  ]).forEach((badEnv) => {
+    it(`fails if process environment argument is ${prettyFormat(badEnv)}`, () => {
       // eslint-disable-next-line no-new
       expect(() => { new GitHub(badEnv); }).toThrow();
     });
