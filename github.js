@@ -20,7 +20,7 @@ class GitHub {
   }
 
   /**
-   * The the full, 40-character SHA-1 hash for the commit at `HEAD` of the current branch.
+   * The the full, 40-character SHA-1 hash for the commit at `HEAD` of the current branch (`GITHUB_SHA`).
    */
   get sha() {
     const { GITHUB_SHA } = this.processEnvironment;
