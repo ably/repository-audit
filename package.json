@@ -4,7 +4,7 @@
   "description": "GitHub App based actor, validating repository settings and contents.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "repository": "ably/repository-audit",
   "license": "Apache-2.0",

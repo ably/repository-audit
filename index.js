@@ -5,6 +5,7 @@ const { createAppAuth } = require('@octokit/auth-app');
 const { graphql } = require('@octokit/graphql');
 const MarkdownWriter = require('./markdown').Writer;
 const RepositoryChecks = require('./checks').Repository;
+const { GitHub } = require('./github');
 
 require('dotenv').config();
 
@@ -125,6 +126,8 @@ async function audit() {
   const endDate = new Date();
   console.log(`Queried Repository Count: ${repositoryCount}`);
 
+  const github = new GitHub(process.env);
+
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
     const resultCells = checkCodes.map((code) => {
@@ -150,7 +153,7 @@ async function audit() {
   }
 
   // Write commit message.
-  const sha = childProcess.execSync('git rev-parse HEAD').toString().trim();
+  const sha = github.sh;
   const branch = childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
   const commitMessage = fs.createWriteStream(path.join(outputDirectoryName, 'commit-message.txt'));
   commitMessage.write(`Generate report at ${startDate.toISOString()}.\n\n`);
