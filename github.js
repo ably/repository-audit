@@ -26,6 +26,49 @@ class GitHub {
     const { GITHUB_SHA } = this.processEnvironment;
     return GITHUB_SHA ?? childProcess.execSync('git rev-parse HEAD').toString().trim();
   }
+
+  /**
+   *
+   */
+  get branch() {
+    const {
+      GITHUB_REF,
+      GITHUB_EVENT_NAME,
+      GITHUB_HEAD_REF,
+    } = this.processEnvironment;
+
+    if (!(GITHUB_REF || GITHUB_EVENT_NAME || GITHUB_HEAD_REF)) {
+      return childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+    }
+
+    switch (GITHUB_EVENT_NAME) {
+      case 'pull_request':
+        return GITHUB_HEAD_REF;
+      case 'push':
+        return GitHub.branchFromPushEventRef(GITHUB_REF);
+      default:
+        throw new Error(`Event name "${GITHUB_EVENT_NAME} not recognised.`);
+    }
+  }
+
+  /**
+   * Unpacks the branch name from `GITHUB_REF` when `GITHUB_EVENT_NAME` is known to be `'push'`.
+   */
+  static branchFromPushEventRef(ref) {
+    // Based on this approach:
+    // https://github.com/ably/sdk-upload-action/blob/51789744a865585f887a922995b7166dfb93ca4f/src/index.ts#L28
+    const parts = ref.split('/');
+    if (parts.length < 3) {
+      throw new Error(`Too few parts. ref: ${ref}`);
+    }
+    if (parts.some((part) => part.length < 1)) {
+      throw new Error(`Empty part(s). ref: ${ref}`);
+    }
+    if (parts[0] !== 'refs' || parts[1] !== 'heads') {
+      throw new Error(`Unexpected prefix. ref: ${ref}`);
+    }
+    return parts.slice(2).join('/');
+  }
 }
 
 module.exports = {
