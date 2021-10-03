@@ -28,7 +28,7 @@ class GitHub {
   }
 
   /**
-   *
+   * The name of the current branch.
    */
   get branch() {
     const {
