@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const childProcess = require('child_process');
 const { createAppAuth } = require('@octokit/auth-app');
 const { graphql } = require('@octokit/graphql');
 const MarkdownWriter = require('./markdown').Writer;
@@ -153,8 +152,7 @@ async function audit() {
   }
 
   // Write commit message.
-  const { sha } = github;
-  const branch = childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+  const { sha, branch } = github;
   const commitMessage = fs.createWriteStream(path.join(outputDirectoryName, 'commit-message.txt'));
   commitMessage.write(`Generate report at ${startDate.toISOString()}.\n\n`);
   commitMessage.write(`Queries finished: ${endDate.toISOString()}\n`);
