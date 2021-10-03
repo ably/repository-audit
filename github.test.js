@@ -124,6 +124,34 @@ describe('repositoryURL', () => {
   });
 });
 
+describe('currentRepositoryURL', () => {
+  it('is null when GitHub environment not available', () => {
+    const url = github({}).currentRepositoryURL;
+    expect(url).toBe(null);
+  });
+
+  it('is null when just GitHub environment repository not available', () => {
+    const partialEnv = {
+      GITHUB_SERVER_URL: 'https://github.com',
+    };
+    const url = github(partialEnv).currentRepositoryURL;
+    expect(url).toBe(null);
+  });
+
+  it('is populated when GitHub environment available', () => {
+    // as observed: https://github.com/ably/repository-audit/issues/4#issuecomment-931663619
+    const env = {
+      GITHUB_SERVER_URL: 'https://github.com',
+      GITHUB_REPOSITORY: 'ably/repository-audit',
+    };
+    const url = github(env).currentRepositoryURL;
+    expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
+    expect(url.hostname).toBe('github.com');
+    expect(url.protocol).toBe('https:');
+    expect(url.pathname).toBe('/ably/repository-audit');
+  });
+});
+
 describe('static utility methods', () => {
   describe('branchFromPushEventRef', () => {
     everythingButString.forEach((badRef) => {

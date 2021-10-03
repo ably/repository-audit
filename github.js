@@ -51,6 +51,11 @@ class GitHub {
     }
   }
 
+  githubServerURL() {
+    const { GITHUB_SERVER_URL } = this.processEnvironment;
+    return new URL(GITHUB_SERVER_URL ?? 'https://github.com/');
+  }
+
   /**
    * e.g. `https://github.com/ably/ably-java`.
    * @param {string} organizationName The org name (e.g. `ably`).
@@ -58,10 +63,21 @@ class GitHub {
    * @returns {URL} The absolute URL to visit this repository in a browser.
    */
   repositoryURL(organizationName, repositoryName) {
-    const { GITHUB_SERVER_URL } = this.processEnvironment;
-    // e.g. https://github.com/ably/ably-java
-    const base = GITHUB_SERVER_URL ?? 'https://github.com/';
-    return new URL(`${organizationName}/${repositoryName}`, base);
+    return new URL(`${organizationName}/${repositoryName}`, this.githubServerURL());
+  }
+
+  /**
+   * e.g. `https://github.com/ably/repository-audit`
+   * @returns {URL?} The absolute URL to visit the current repository in a browser, or `null` if indeterminable.
+   */
+  get currentRepositoryURL() {
+    const { GITHUB_REPOSITORY } = this.processEnvironment;
+    if (!GITHUB_REPOSITORY) {
+      // GitHub environment not available. Probably running on a developer's workstation, so it's safest not to assume
+      // this is the `ably/repository-audit` repository at all.
+      return null;
+    }
+    return new URL(GITHUB_REPOSITORY, this.githubServerURL());
   }
 
   /**
