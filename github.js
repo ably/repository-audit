@@ -52,6 +52,19 @@ class GitHub {
   }
 
   /**
+   * e.g. `https://github.com/ably/ably-java`.
+   * @param {string} organizationName The org name (e.g. `ably`).
+   * @param {string} repositoryName The repository name (e.g. `ably-java`).
+   * @returns {URL} The absolute URL to visit this repository in a browser.
+   */
+  repositoryURL(organizationName, repositoryName) {
+    const { GITHUB_SERVER_URL } = this.processEnvironment;
+    // e.g. https://github.com/ably/ably-java
+    const base = GITHUB_SERVER_URL ?? 'https://github.com/';
+    return new URL(`${organizationName}/${repositoryName}`, base);
+  }
+
+  /**
    * Unpacks the branch name from `GITHUB_REF` when `GITHUB_EVENT_NAME` is known to be `'push'`.
    */
   static branchFromPushEventRef(ref) {

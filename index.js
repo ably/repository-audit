@@ -135,7 +135,7 @@ async function audit() {
       const { emoji, isPass } = result;
       return isPass ? emoji : `[${emoji}](#${name.toLowerCase()}-check-${code.toLowerCase()})`;
     });
-    const interactiveName = `[${name}](https://github.com/ably/${name})`;
+    const interactiveName = `[${name}](${github.repositoryURL('ably', name)})`;
     return [interactiveName].concat(resultCells);
   }
 

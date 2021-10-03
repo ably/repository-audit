@@ -75,6 +75,55 @@ describe('branch', () => {
   });
 });
 
+describe('repositoryURL', () => {
+  it('is populated when GitHub environment not available', () => {
+    const url = github({}).repositoryURL('foo', 'bar');
+    expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
+    expect(url.hostname).toBe('github.com');
+    expect(url.protocol).toBe('https:');
+    expect(url.pathname).toBe('/foo/bar');
+  });
+
+  it('is populated when GitHub environment available, and looking as expected', () => {
+    // as observed: https://github.com/ably/repository-audit/issues/4#issuecomment-931663619
+    const env = {
+      GITHUB_SERVER_URL: 'https://github.com',
+    };
+
+    const url = github(env).repositoryURL('ably', 'ably-java');
+    expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
+    expect(url.hostname).toBe('github.com');
+    expect(url.protocol).toBe('https:');
+    expect(url.pathname).toBe('/ably/ably-java');
+  });
+
+  it('is populated when GitHub environment available, even if unexpected host', () => {
+    // as observed: https://github.com/ably/repository-audit/issues/4#issuecomment-931663619
+    const surprisingEnv = {
+      GITHUB_SERVER_URL: 'https://gitlab.com',
+    };
+
+    const url = github(surprisingEnv).repositoryURL('ably-labs', 'AblyD');
+    expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
+    expect(url.hostname).toBe('gitlab.com');
+    expect(url.protocol).toBe('https:');
+    expect(url.pathname).toBe('/ably-labs/AblyD');
+  });
+
+  it('is populated when GitHub environment available, even if unexpected protocol', () => {
+    // as observed: https://github.com/ably/repository-audit/issues/4#issuecomment-931663619
+    const surprisingEnv = {
+      GITHUB_SERVER_URL: 'http://github.com',
+    };
+
+    const url = github(surprisingEnv).repositoryURL('ably', 'ably-asset-tracking-android');
+    expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
+    expect(url.hostname).toBe('github.com');
+    expect(url.protocol).toBe('http:');
+    expect(url.pathname).toBe('/ably/ably-asset-tracking-android');
+  });
+});
+
 describe('static utility methods', () => {
   describe('branchFromPushEventRef', () => {
     everythingButString.forEach((badRef) => {
