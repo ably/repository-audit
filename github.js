@@ -47,7 +47,7 @@ class GitHub {
       case 'push':
         return GitHub.branchFromPushEventRef(GITHUB_REF);
       default:
-        throw new Error(`Event name "${GITHUB_EVENT_NAME} not recognised.`);
+        throw new Error(`Event name "${GITHUB_EVENT_NAME}" not recognised.`);
     }
   }
 
