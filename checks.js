@@ -152,6 +152,27 @@ class Repository {
 
     return results.result;
   }
+
+  mergeButton() {
+    const {
+      deleteBranchOnMerge,
+      rebaseMergeAllowed,
+      squashMergeAllowed,
+      mergeCommitAllowed,
+      autoMergeAllowed,
+    } = this.repository;
+
+    const results = new ResultList('Merge button switches:');
+    const emit = (description) => results.add(fail(description));
+
+    if (isFalse(deleteBranchOnMerge)) emit('Does not automatically delete head branches.');
+    if (isTrue(rebaseMergeAllowed)) emit('Allows rebase merging.');
+    if (isTrue(squashMergeAllowed)) emit('Allows squash merging.');
+    if (isFalse(mergeCommitAllowed)) emit('Does not allow merge commits.');
+    if (isTrue(autoMergeAllowed)) emit('Allows auto-merge.');
+
+    return results.result;
+  }
 }
 
 module.exports = {
