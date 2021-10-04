@@ -1,8 +1,6 @@
 # This is a manually triggered workflow (hence on: workflow_dispatch).
 # See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#manual-events
 
-# The expectation is that this workflow will be run periodically in future, once the code has settled.
-
 on:
   # allow us to run this workflow manually when required - for example to update the report after changes have been
   # made to repository configurations
