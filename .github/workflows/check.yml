@@ -14,5 +14,5 @@ jobs:
       - name: Lint and Test
         run: |
           npm ci
-          npx eslint .
+          npm run lint
           npm run test

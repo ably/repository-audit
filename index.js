@@ -25,6 +25,9 @@ const {
   }
 })();
 
+/**
+ * Run the audit and generate the report.
+ */
 async function audit() {
   const orgName = 'ably';
   const privatePem = await fs.promises.readFile('app-private-key.pem', 'ascii');
@@ -128,6 +131,12 @@ async function audit() {
 
   const github = new GitHub(process.env);
 
+  /**
+   * Renders the content for the table row summarising check results for a repository.
+   *
+   * @param {string} name The repository name - e.g. 'ably-java'.
+   * @returns {string[]} Markdown-formatted content for this cells in this row.
+   */
   function repositoryResultCells(name) {
     const results = checkResults.get(name);
     const resultCells = checkCodes.map((code) => {
