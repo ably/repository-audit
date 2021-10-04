@@ -1,3 +1,7 @@
+# This workflow only lints the code and runs unit tests.
+# It intentionally does not execute any report generation code - this keeps it lightweight, indicating basic levels
+# of health for this repository (for pull requests and the `main` branch).
+
 on:
   pull_request:
   push:
