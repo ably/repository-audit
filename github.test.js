@@ -70,8 +70,8 @@ describe('branch', () => {
       GITHUB_HEAD_REF: 'bar',
     };
 
-    // eslint-disable-next-line no-unused-vars
-    expect(() => { const dummy = github(badEnv).branch; }).toThrow();
+    // eslint-disable-next-line no-unused-expressions
+    expect(() => { github(badEnv).branch; }).toThrow();
   });
 });
 
