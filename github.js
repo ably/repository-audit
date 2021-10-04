@@ -10,6 +10,7 @@ class GitHub {
   /**
    * Create and initialise a GitHub object, presenting a front end for the environment available to us when running in
    * a GitHub workflow context.
+   *
    * @param {*} processEnvironment Typically Node.js' process.env, however may be mocked for testing purposes.
    */
   constructor(processEnvironment) {
@@ -20,7 +21,7 @@ class GitHub {
   }
 
   /**
-   * The the full, 40-character SHA-1 hash for the commit at `HEAD` of the current branch (`GITHUB_SHA`).
+   * @returns {string} The the full, 40-character SHA-1 hash for the commit at `HEAD` of the current branch (`GITHUB_SHA`).
    */
   get sha() {
     const { GITHUB_SHA } = this.processEnvironment;
@@ -28,7 +29,7 @@ class GitHub {
   }
 
   /**
-   * The name of the current branch.
+   * @returns {string} The name of the current branch.
    */
   get branch() {
     const {
@@ -57,7 +58,8 @@ class GitHub {
   }
 
   /**
-   * e.g. `https://github.com/ably/ably-java`.
+   * e.g. `https://github.com/ably/ably-java`
+   *
    * @param {string} organizationName The org name (e.g. `ably`).
    * @param {string} repositoryName The repository name (e.g. `ably-java`).
    * @returns {URL} The absolute URL to visit this repository in a browser.
@@ -68,6 +70,7 @@ class GitHub {
 
   /**
    * e.g. `https://github.com/ably/repository-audit`
+   *
    * @returns {URL?} The absolute URL to visit the current repository in a browser, or `null` if indeterminable.
    */
   get currentRepositoryURL() {
@@ -82,6 +85,9 @@ class GitHub {
 
   /**
    * Unpacks the branch name from `GITHUB_REF` when `GITHUB_EVENT_NAME` is known to be `'push'`.
+   *
+   * @param {string} ref The GitHub ref - e.g. `refs/heads/main`
+   * @returns {string} The branch name - e.g. `main` or `feature/some-new-thing`
    */
   static branchFromPushEventRef(ref) {
     // Based on this approach:

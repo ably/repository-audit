@@ -5,6 +5,7 @@ const WARN = 'yellow';
 class Result {
   /**
    * Create and initialise a Result object, indicating the result of a check.
+   *
    * @param {string} indication The high level result being expressed (PASS, FAIL or WARN).
    * @param {string} [description] Specific, markdown-formatted detail around the reasons for this check not passing, otherwise null.
    * May contain multiple lines or paragraphs when rendered.
@@ -15,7 +16,7 @@ class Result {
   }
 
   /**
-   * The GitHub-compatible emoji representing this result's indication.
+   * @returns {string} The GitHub-compatible emoji representing this result's indication.
    * See: https://api.github.com/emojis
    */
   get emoji() {
@@ -30,6 +31,7 @@ class Result {
 class ResultList {
   /**
    * Create and initialise a ResultList object, aggregating results from multiple checks.
+   *
    * @param {string} listDescription The markdown-formatted detail introducing the results.
    */
   constructor(listDescription) {
@@ -40,6 +42,7 @@ class ResultList {
 
   /**
    * Add a result to this list, only if it's negative.
+   *
    * @param {Result} result The result to add to this list, ignored if it's a PASS.
    */
   add(result) {
@@ -74,6 +77,7 @@ class Repository {
 
   /**
    * Validates the default branch name.
+   *
    * @returns {Result} The result of this check for this repository.
    */
   defaultBranchName() {
@@ -93,6 +97,7 @@ class Repository {
 
   /**
    * Validates that there is a branch protection rule for the default branch and that it is configured correctly.
+   *
    * @returns {Result} The result of this check for this repository.
    */
   branchProtectionRuleForDefaultBranch() {

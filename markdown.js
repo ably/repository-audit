@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 /**
  * Utility wrapping a writeable stream, offering methods to fluidly write markdown content to it.
  */
@@ -16,6 +18,7 @@ class Writer {
 
   /**
    * Writes cells for a table header.
+   *
    * @param {Array.<string>} cells Contents for each cell in this header.
    */
   tableHead(cells) {
@@ -26,7 +29,8 @@ class Writer {
 
   /**
    * Writes cells for a line in a table body.
-   * @param {Array.<string>} cellContents Contents for each cell in this body row.
+   *
+   * @param {string[]} cells Contents for each cell in this body row.
    */
   tableBodyLine(cells) {
     this.line(tableLine(cells));
@@ -34,8 +38,9 @@ class Writer {
 
   /**
    * Writes the given string plus a terminating newline character.
+   *
    * @param {string} line Contents for the line.
-   * @param {boolean} spaceAround
+   * @param {boolean} spaceAround Whether this line should have an empty line above and below it.
    */
   line(line, spaceAround = false) {
     const prefix = (!this.lastLineHadSpaceAround && spaceAround ? '\n' : '');
@@ -59,6 +64,12 @@ module.exports = {
   Writer,
 };
 
+/**
+ * Encapsulate cells as markdown-formatted table row.
+ *
+ * @param {string[]} cells The contents for each cell in the row.
+ * @returns {string} The markdown-formatted table row.
+ */
 function tableLine(cells) {
   const packed = cells.join(' | ');
   return `| ${packed} |`;
