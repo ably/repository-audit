@@ -154,20 +154,41 @@ describe('static utility methods', () => {
   describe('branchFromPushEventRef', () => {
     everythingButString.forEach((badRef) => {
       it(`fails if ref argument is ${prettyFormat(badRef)}`, () => {
-        expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow();
+        expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow('must be supplied as a string');
       });
     });
 
-    describe('ref argument has too few or empty parts', () => {
+    describe('ref argument has too few parts', () => {
       [
         'refs',
         'refs/',
         'refs/heads',
+      ].forEach((badRef) => {
+        it(`fails if ref argument is ${prettyFormat(badRef)}`, () => {
+          expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow('Too few parts');
+        });
+      });
+    });
+
+    describe('ref argument has empty parts', () => {
+      [
         'refs/heads/',
         'refs/heads//',
       ].forEach((badRef) => {
         it(`fails if ref argument is ${prettyFormat(badRef)}`, () => {
-          expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow();
+          expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow('Empty part(s)');
+        });
+      });
+    });
+
+    describe('ref argument has wrong prefix', () => {
+      [
+        'foo/heads/bar',
+        'refs/foo/bar',
+        'foo/bar/ooh',
+      ].forEach((badRef) => {
+        it(`fails if ref argument is ${prettyFormat(badRef)}`, () => {
+          expect(() => { GitHub.branchFromPushEventRef(badRef); }).toThrow('Unexpected prefix');
         });
       });
     });

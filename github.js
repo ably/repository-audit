@@ -84,6 +84,9 @@ class GitHub {
    * Unpacks the branch name from `GITHUB_REF` when `GITHUB_EVENT_NAME` is known to be `'push'`.
    */
   static branchFromPushEventRef(ref) {
+    if (!ref || typeof ref !== 'string') {
+      throw new Error('ref must be supplied as a string.');
+    }
     // Based on this approach:
     // https://github.com/ably/sdk-upload-action/blob/51789744a865585f887a922995b7166dfb93ca4f/src/index.ts#L28
     const parts = ref.split('/');
