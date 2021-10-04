@@ -80,7 +80,7 @@ class GitHub {
       // this is the `ably/repository-audit` repository at all.
       return null;
     }
-    return new URL(GITHUB_REPOSITORY, this.githubServerURL);
+    return new URL(`${GITHUB_REPOSITORY}/`, this.githubServerURL);
   }
 
   /**
