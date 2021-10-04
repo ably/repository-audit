@@ -54,10 +54,14 @@ async function audit() {
     organization(login: $orgName) {
       repositories(first: 100, after: $previousEndCursor) {
         nodes {
-          name,
+          name
+          hasIssuesEnabled
+          hasProjectsEnabled
+          hasWikiEnabled
+          forkingAllowed
           defaultBranchRef {
             name
-          },
+          }
           visibility
           branchProtectionRules(first: 100) {
             nodes {
@@ -88,6 +92,7 @@ async function audit() {
   const checkDescriptions = {
     A: 'Validates that there is a default branch and it is called `main`.',
     B: 'Validates that there is a branch protection rule defined for the default branch and that it has been configured correctly.',
+    C: 'Validates that fundamental GitHub features are enabled or disabled as appropriate.',
   };
   const checkCodes = Object.getOwnPropertyNames(checkDescriptions).sort();
 
@@ -117,6 +122,7 @@ async function audit() {
       checkResults.set(name, {
         A: checks.defaultBranchName(),
         B: checks.branchProtectionRuleForDefaultBranch(),
+        C: checks.features(),
       });
     });
     repositoryCount += repositoryNodes.length;

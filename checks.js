@@ -131,6 +131,27 @@ class Repository {
 
     return results.result;
   }
+
+  features() {
+    const {
+      hasIssuesEnabled,
+      hasProjectsEnabled,
+      hasWikiEnabled,
+      forkingAllowed,
+      visibility,
+    } = this.repository;
+
+    const results = new ResultList('GitHub feature switches:');
+    const emit = (description) => results.add(fail(description));
+
+    if (isFalse(hasIssuesEnabled)) emit('Issues are disabled.');
+    if (isTrue(hasProjectsEnabled)) emit('Projects are enabled.');
+    if (isTrue(hasWikiEnabled)) emit('Wiki is enabled.');
+    if (visibility === 'PUBLIC' && isFalse(forkingAllowed)) emit('Forking is disabled.');
+    if (visibility !== 'PUBLIC' && isTrue(forkingAllowed)) emit('Forking is enabled.');
+
+    return results.result;
+  }
 }
 
 module.exports = {
