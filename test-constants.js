@@ -3,11 +3,13 @@ const allValues = {
     'hello', // string primitive
     '', // empty string primitive
   ],
+  booleanPrimitives: [
+    true, // boolean primitive
+    false, // boolean primitive
+  ],
   otherPrimitives: [
     undefined,
     null,
-    true, // boolean primitive
-    false, // boolean primitive
     0, // number primitive
     1, // number primitive
     -1, // number primitive
@@ -30,4 +32,5 @@ const valuesExcluding = (excludeKey) => Object
 module.exports = {
   everythingButObject: valuesExcluding('objects'),
   everythingButString: valuesExcluding('stringPrimitives'),
+  everythingButBoolean: valuesExcluding('booleanPrimitives'),
 };
