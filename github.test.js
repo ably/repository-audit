@@ -6,8 +6,6 @@ const {
 
 const { GitHub } = require('./github');
 
-const github = (env) => new GitHub(env);
-
 describe('constructor', () => {
   everythingButObject.forEach((badEnv) => {
     it(`fails if process environment argument is ${prettyFormat(badEnv)}`, () => {
@@ -22,20 +20,20 @@ describe('sha', () => {
   const expectedPattern = /^[0-9a-f]+$/; // https://stackoverflow.com/a/5317339/392847
 
   it('is populated when GitHub environment not available', () => {
-    const { sha } = github({});
+    const { sha } = new GitHub({});
     expect(sha).toHaveLength(expectedLength);
     expect(sha).toMatch(expectedPattern);
   });
 
   it('uses the GitHub environment if it is available', () => {
     const mockValue = 'foo';
-    expect(github({ GITHUB_SHA: mockValue }).sha).toMatch(mockValue);
+    expect(new GitHub({ GITHUB_SHA: mockValue }).sha).toMatch(mockValue);
   });
 });
 
 describe('branch', () => {
   it('is populated when GitHub environment not available', () => {
-    const { branch } = github({});
+    const { branch } = new GitHub({});
     expect(typeof branch).toBe('string');
     expect(branch.length).toBeGreaterThan(0);
     expect(branch.trim().length).toBeGreaterThan(0);
@@ -49,7 +47,7 @@ describe('branch', () => {
       GITHUB_HEAD_REF: 'explore-github-environment',
     };
 
-    expect(github(env).branch).toBe('explore-github-environment');
+    expect(new GitHub(env).branch).toBe('explore-github-environment');
   });
 
   it('is populated when GitHub environment for push is available', () => {
@@ -60,7 +58,7 @@ describe('branch', () => {
       GITHUB_HEAD_REF: '',
     };
 
-    expect(github(env).branch).toBe('main');
+    expect(new GitHub(env).branch).toBe('main');
   });
 
   it('fails if the GitHub environment is available but the event name is not recognised', () => {
@@ -71,13 +69,13 @@ describe('branch', () => {
     };
 
     // eslint-disable-next-line no-unused-expressions
-    expect(() => { github(badEnv).branch; }).toThrow();
+    expect(() => { new GitHub(badEnv).branch; }).toThrow();
   });
 });
 
 describe('repositoryURL', () => {
   it('is populated when GitHub environment not available', () => {
-    const url = github({}).repositoryURL('foo', 'bar');
+    const url = new GitHub({}).repositoryURL('foo', 'bar');
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('github.com');
     expect(url.protocol).toBe('https:');
@@ -90,7 +88,7 @@ describe('repositoryURL', () => {
       GITHUB_SERVER_URL: 'https://github.com',
     };
 
-    const url = github(env).repositoryURL('ably', 'ably-java');
+    const url = new GitHub(env).repositoryURL('ably', 'ably-java');
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('github.com');
     expect(url.protocol).toBe('https:');
@@ -103,7 +101,7 @@ describe('repositoryURL', () => {
       GITHUB_SERVER_URL: 'https://gitlab.com',
     };
 
-    const url = github(surprisingEnv).repositoryURL('ably-labs', 'AblyD');
+    const url = new GitHub(surprisingEnv).repositoryURL('ably-labs', 'AblyD');
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('gitlab.com');
     expect(url.protocol).toBe('https:');
@@ -116,7 +114,7 @@ describe('repositoryURL', () => {
       GITHUB_SERVER_URL: 'http://github.com',
     };
 
-    const url = github(surprisingEnv).repositoryURL('ably', 'ably-asset-tracking-android');
+    const url = new GitHub(surprisingEnv).repositoryURL('ably', 'ably-asset-tracking-android');
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('github.com');
     expect(url.protocol).toBe('http:');
@@ -126,7 +124,7 @@ describe('repositoryURL', () => {
 
 describe('currentRepositoryURL', () => {
   it('is null when GitHub environment not available', () => {
-    const url = github({}).currentRepositoryURL;
+    const url = new GitHub({}).currentRepositoryURL;
     expect(url).toBe(null);
   });
 
@@ -134,7 +132,7 @@ describe('currentRepositoryURL', () => {
     const partialEnv = {
       GITHUB_SERVER_URL: 'https://github.com',
     };
-    const url = github(partialEnv).currentRepositoryURL;
+    const url = new GitHub(partialEnv).currentRepositoryURL;
     expect(url).toBe(null);
   });
 
@@ -144,7 +142,7 @@ describe('currentRepositoryURL', () => {
       GITHUB_SERVER_URL: 'https://github.com',
       GITHUB_REPOSITORY: 'ably/repository-audit',
     };
-    const url = github(env).currentRepositoryURL;
+    const url = new GitHub(env).currentRepositoryURL;
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('github.com');
     expect(url.protocol).toBe('https:');
