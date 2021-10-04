@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: TEMPORARY Exploratory Log Emissions
-        run: env
+
       - name: Lint and Test
         run: |
           npm ci
