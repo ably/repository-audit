@@ -26,6 +26,7 @@ const {
 })();
 
 async function audit() {
+  const orgName = 'ably';
   const privatePem = await fs.promises.readFile('app-private-key.pem', 'ascii');
 
   // https://github.com/octokit/auth-app.js/#authenticate-as-installation
@@ -46,8 +47,8 @@ async function audit() {
 
   // The type of $previousEndCursor is explicitly `String`, not `String!`. This is because we intentionally supply
   // a value of `null` on our first query.
-  const query = `query repositories($previousEndCursor: String) {
-    organization(login: "ably") {
+  const query = `query repositories($orgName: String!, $previousEndCursor: String) {
+    organization(login: $orgName) {
       repositories(first: 100, after: $previousEndCursor) {
         nodes {
           name,
@@ -101,7 +102,7 @@ async function audit() {
   while (needToQuery) {
     queryCount += 1;
     console.log(`Executing Query #${queryCount}...`);
-    const variables = { previousEndCursor };
+    const variables = { orgName, previousEndCursor };
     const { organization } = await graphqlWithAuth(query, variables); // eslint-disable-line no-await-in-loop
 
     const repositoryNodes = organization.repositories.nodes;
@@ -135,7 +136,7 @@ async function audit() {
       const { emoji, isPass } = result;
       return isPass ? emoji : `[${emoji}](#${name.toLowerCase()}-check-${code.toLowerCase()})`;
     });
-    const interactiveName = `[${name}](${github.repositoryURL('ably', name)})`;
+    const interactiveName = `[${name}](${github.repositoryURL(orgName, name)})`;
     return [interactiveName].concat(resultCells);
   }
 
@@ -146,7 +147,7 @@ async function audit() {
   // The expectation is that this tool is run from the root of the repository.
   const outputDirectoryName = 'output';
   const reportDirectoryName = path.join(outputDirectoryName, 'report');
-  const fileName = 'ably.md';
+  const fileName = `${orgName}.md`;
   if (!fs.existsSync(reportDirectoryName)) {
     fs.mkdirSync(reportDirectoryName, { recursive: true });
   }
@@ -173,7 +174,7 @@ async function audit() {
   // Write report.
   const md = new MarkdownWriter(fs.createWriteStream(path.join(reportDirectoryName, fileName)));
 
-  md.h(1, 'Repository Audit for `ably`');
+  md.h(1, `Repository Audit for \`${orgName}\``);
 
   md.h(2, 'Public Repositories');
   md.tableHead(resultHeaderCells);
