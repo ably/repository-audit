@@ -1,3 +1,5 @@
+const { isFalse, isTrue } = require('./strict');
+
 const PASS = 'green';
 const FAIL = 'red';
 const WARN = 'yellow';
@@ -115,17 +117,17 @@ class Repository {
 
     // FAIL for Essentials
     let emit = (description) => results.add(fail(description));
-    if (rule.allowsDeletions) emit('Can be deleted.');
-    if (rule.allowsForcePushes) emit('Allows force push.');
-    if (!rule.restrictsPushes) emit('Does not restrict push.');
+    if (isTrue(rule.allowsDeletions)) emit('Can be deleted.');
+    if (isTrue(rule.allowsForcePushes)) emit('Allows force push.');
+    if (isFalse(rule.restrictsPushes)) emit('Does not restrict push.');
 
     // WARN for Ideals
     emit = (description) => results.add(warn(description));
-    if (!rule.requiresApprovingReviews) emit('Does not require reviewer approval.');
+    if (isFalse(rule.requiresApprovingReviews)) emit('Does not require reviewer approval.');
     if (rule.requiredApprovingReviewCount < 1) emit('Required approving reviewer count is too low.');
-    if (!rule.requiresConversationResolution) emit('Does not require conversations to be resolved before merging.');
-    if (!rule.requiresStatusChecks) emit('Does not require status checks to pass.');
-    if (!rule.requiresStrictStatusChecks) emit('Does not require branches to be up to date before merging.');
+    if (isFalse(rule.requiresConversationResolution)) emit('Does not require conversations to be resolved before merging.');
+    if (isFalse(rule.requiresStatusChecks)) emit('Does not require status checks to pass.');
+    if (isFalse(rule.requiresStrictStatusChecks)) emit('Does not require branches to be up to date before merging.');
 
     return results.result;
   }
