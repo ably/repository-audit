@@ -13,6 +13,68 @@ It is partnered with the
 ['Ably SDK Team Repository Audit' GitHub App](https://github.com/apps/ably-sdk-team-repository-audit),
 where this tool authenticates as that app in order to do its work.
 
+### Why?
+
+Oversight. Monitoring.
+
+While GitHub clearly understand that their users have a desire to gain a bird's eye view of activity across their organization(s)
+(see [their September 2021 announcement of 'audit log streaming' entering public beta](https://github.blog/2021-09-16-audit-log-streaming-public-beta/)),
+the reality is that with our current interfaces to GitHub (being `git` clients and their browser UI) we have limitations,
+down to the manually-driven nature of all these interactions:
+
+- To check if a repository is configured correctly we need to navigate via the browser UI to its settings page
+- To check if two repositories are configured the same then we need to load up two browser UIs side-by-side
+- If a repository is less used then its settings can drift out of sync with what we're tending towards conforming elsewhere
+- We often have numerous people who have permissions enough to change repository settings - perhaps even accidentally, and this may not be spotted for some time
+- There are things we care about but we need to care about them across hundreds of repositories, public and private, across multiple GitHub orgs
+
+### What?
+
+Essentially a [lint](https://en.wikipedia.org/wiki/Lint_(software)) tool for our repository configurations.
+While this tool may examine repository _contents_ (a.k.a. source code) in time (e.g. to check for presence of standard files),
+we're focussing initially on settings which are available to most of us only via GitHub's browser UI.
+
+#### Naming / Vocabulary
+
+We care about others and have empathy for their views ('tech needs humanity' is a core Ably value).
+It's important that we make concerted efforts to remove non-inclusive terminology from our nomenclature.
+This includes the branch names we use in our repositories, especially the default branch names, for both public and private repositories.
+
+#### Consistency / Principle of Least Astonishment
+
+Developers working with Ably (as maintainers or customers) should be able to, wherever idiomatically and logically possible,
+seamlessly move from repository to repository with minimal friction. This means:
+
+- Consistent use of labels for issues and pull requests
+- Whether projects, wikis and issues tabs appear in the repository home page UI
+
+#### Guard Rails / Workflow
+
+As a company Ably are very focussed on a 'written first' approach to the way that we approach our work.
+
+An implicit principle of written first is that we aim to keep things [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
+meaning that we would rather be able to point people towards a canonical location where process-oriented instructions live.
+In other words, a response to a query about the way to do something can be along the lines of
+'look over there, where this is documented'.
+
+Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (i.e. it's a switch or rule that was installed somewhere).
+In which case, this tool is here to periodically check that those guard rails are consistently configured correctly.
+e.g.:
+
+- Allowed Behaviour of the Merge button
+- Branch protection rule for the default branch (typically `main`)
+
+### How?
+
+The questions that needed answering in order to bring this tool to life were:
+
+1. Who does it run as (the 'actor')?
+2. Where does it run?
+3. How does it get triggered?
+4. What form does the report take?
+5. Where does the report output go?
+6. Is there any potential for monitoring changes to the report output over time?
+
 ## Runtime Requirements
 
 This tool needs a private key for the GitHub App in order to sign access token requests.
