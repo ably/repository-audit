@@ -59,14 +59,14 @@ As a company Ably are very focussed on a 'written first' approach to the way tha
 
 An implicit principle of written first is that we aim to keep things [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
 meaning that we would rather be able to point people towards a canonical location where process-oriented instructions live.
-In other words, a response to a query about the way to do something can be along the lines of
+In other words, our response to a query about the way to do something should be along the lines of
 'look over there, where this is documented'.
 
 Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (i.e. it's a switch or rule that was installed somewhere).
 In which case, this tool is here to periodically check that those guard rails are consistently configured correctly.
 e.g.:
 
-- Allowed Behaviour of the Merge button
+- Allowed Behaviour of the Merge button ([#11](https://github.com/ably/repository-audit/issues/11))
 - Branch protection rule for the default branch (typically `main`)
 
 ### How?
