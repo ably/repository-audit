@@ -73,12 +73,15 @@ e.g.:
 
 The questions that needed answering in order to bring this tool to life were:
 
-1. Who does it run as (the 'actor')?
-2. Where does it run?
-3. How does it get triggered?
-4. What form does the report take?
-5. Where does the report output go?
-6. Is there any potential for monitoring changes to the report output over time?
+1. **Who does it run as (the 'actor')?** As a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps#about-github-apps) (see [Runtime Requirements](#runtime-requirements)).
+2. **Where does it run?** In GitHub-hosted runners (see [the run workflow](https://github.com/ably/repository-audit/blob/main/.github/workflows/run.yml)).
+3. **How does it get triggered?** Automatically when code is pushed to this repository, periodically to keep the report output fresh and manually if there is a need to update the report before the next periodic update (see [the run workflow](https://github.com/ably/repository-audit/blob/main/.github/workflows/run.yml)).
+4. **What form does the report take?** Markdown. Because:
+    - The GitHub browser UI provides us a free rendering engine for markdown
+    - If formatted logically, markdown is very git-diff friendly
+    - _Keeps It Simple_ and is universally understood by many
+5. **Where does the report output go?** Downstream repository. See previous answer regarding markdown for the reason why this needs be no more complex than that.
+6. **Is there any potential for monitoring changes to the report output over time?** Yes. Each update to the report is a `git` commit and will generally only update a small part of the report reflecting what has changed since the report was last run. This means we can use `git` tools and the GitHub browser UI to examine these report diffs over time.
 
 ## Runtime Requirements
 
