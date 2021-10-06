@@ -25,7 +25,7 @@ down to the manually-driven nature of all these interactions:
 - To check if a repository is configured correctly we need to navigate via the browser UI to its settings page
 - To check if two repositories are configured the same then we need to load up two browser UIs side-by-side
 - If a repository is less used then its settings can drift out of sync with what we're tending towards conforming elsewhere
-- We often have numerous people who have permissions enough to change repository settings - perhaps even accidentally, and this may not be spotted for some time
+- We often have numerous people who have permissions enough to change repository settings, perhaps even accidentally, and these changes may not be spotted for some time
 - There are things we care about but we need to care about them across hundreds of repositories, public and private, across multiple GitHub orgs
 
 ### What?
