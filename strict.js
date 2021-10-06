@@ -1,6 +1,6 @@
-const isBoolean = (value, expectedValue) => {
+const typeCheckedStrictEquals = (value, expectedValue) => {
   const typeOfValue = typeof value;
-  const expectedType = 'boolean';
+  const expectedType = typeof expectedValue;
   if (typeOfValue !== expectedType) {
     throw new Error(`Unexpected type '${typeOfValue}' when expected '${expectedType}.`);
   }
@@ -14,7 +14,7 @@ const isBoolean = (value, expectedValue) => {
  * @param {*} value The value to be checked.
  * @returns {boolean} Only returns `true` if `value` is of 'boolean' type with value `false` (strict equality check).
  */
-const isFalse = (value) => isBoolean(value, false);
+const isFalse = (value) => typeCheckedStrictEquals(value, false);
 
 /**
  * Uses a strict equality check (`===`) to validate that `value` is `true`.
@@ -23,7 +23,7 @@ const isFalse = (value) => isBoolean(value, false);
  * @param {*} value The value to be checked.
  * @returns {boolean} Only returns `true` if `value` is of 'boolean' type with value `true` (strict equality check).
  */
-const isTrue = (value) => isBoolean(value, true);
+const isTrue = (value) => typeCheckedStrictEquals(value, true);
 
 module.exports = {
   isFalse,
