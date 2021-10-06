@@ -1,5 +1,5 @@
-const isFalse = (value) => typeof value === 'boolean' && value === false;
-const isTrue = (value) => typeof value === 'boolean' && value === true;
+const isFalse = (value) => value === false;
+const isTrue = (value) => value === true;
 
 module.exports = {
   isFalse,
