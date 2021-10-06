@@ -43,10 +43,15 @@ This includes the branch names we use in our repositories, especially the defaul
 #### Consistency / Principle of Least Astonishment
 
 Developers working with Ably (as maintainers or customers) should be able to, wherever idiomatically and logically possible,
-seamlessly move from repository to repository with minimal friction. This means:
+seamlessly move from repository to repository with minimal friction. This means consistent:
 
-- Consistent use of labels for issues and pull requests
-- Whether projects, wikis and issues tabs appear in the repository home page UI
+- Use of labels for issues and pull requests ([#2](https://github.com/ably/repository-audit/issues/2))
+- Appearance of 'Projects', 'Wikis' and 'Issues' tabs on repository home pages ([#11](https://github.com/ably/repository-audit/issues/11))
+- Appearance of 'Releases', 'Packages' and 'Environments' sections in the side column on repository home pages ([#16](https://github.com/ably/repository-audit/issues/16))
+- Presence and contents of `LICENSE` ([#26](https://github.com/ably/repository-audit/issues/26))
+- Presence and contents of `COPYRIGHT`
+- Presence and contents of `MAINTAINERS.md`
+- Presence and broad layout of `README.md`
 
 #### Guard Rails / Workflow
 
