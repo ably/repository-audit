@@ -20,23 +20,23 @@ Oversight. Monitoring.
 While GitHub clearly understand that their users have a desire to gain a bird's eye view of activity across their organization(s)
 (see [their September 2021 announcement of 'audit log streaming' entering public beta](https://github.blog/2021-09-16-audit-log-streaming-public-beta/)),
 the reality is that with our current interfaces to GitHub (being `git` clients and their browser UI) we have limitations,
-down to the manually-driven nature of all these interactions:
+due to the manual nature of all these interactions:
 
 - To check if a repository is configured correctly we need to navigate via the browser UI to its settings page
 - To check if two repositories are configured the same then we need to load up two browser UIs side-by-side
-- If a repository is less used then its settings can drift out of sync with what we're tending towards conforming elsewhere
-- We often have numerous people who have permissions enough to change repository settings, perhaps even accidentally, and these changes may not be spotted for some time
+- If a repository is used infrequently then its settings can drift out of sync with what we're tending to use elsewhere
+- We often grant several people permission to change repository settings and these changes (deliberate or accidental) may not be spotted for some time
 - There are things we care about but we need to care about them across hundreds of repositories, public and private, across multiple GitHub orgs
 
 ### What?
 
 Essentially a [lint](https://en.wikipedia.org/wiki/Lint_(software)) tool for our repository configurations.
-While this tool may examine repository _contents_ (a.k.a. source code) in time (e.g. to check for presence of standard files),
+While this tool may examine repository _contents_ (a.k.a. source code) in time (for example, to check for presence of standard files),
 we're focussing initially on settings which are available to most of us only via GitHub's browser UI.
 
 #### Naming / Vocabulary
 
-We care about others and have empathy for their views ('tech needs humanity' is a core Ably value).
+We care about others and have empathy for their views ('tech needs humanity' is [one of Ably's core values](https://ably.com/blog/ably-values)).
 It's important that we make concerted efforts to remove non-inclusive terminology from our nomenclature.
 This includes the branch names we use in our repositories, especially the default branch names, for both public and private repositories.
 
@@ -55,16 +55,16 @@ seamlessly move from repository to repository with minimal friction. This means 
 
 #### Guard Rails / Workflow
 
-As a company Ably are very focussed on a 'written first' approach to the way that we approach our work.
+As a company Ably is very focussed on a 'written first' approach to the way that we approach our work.
 
-An implicit principle of written first is that we aim to keep things [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
+An implicit principle of written first is that we aim to keep things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
 meaning that we would rather be able to point people towards a canonical location where process-oriented instructions live.
 In other words, our response to a query about the way to do something should be along the lines of
 'look over there, where this is documented'.
 
-Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (i.e. it's a switch or rule that was installed somewhere).
+Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (because it's a switch or rule that was installed somewhere).
 In which case, this tool is here to periodically check that those guard rails are consistently configured correctly.
-e.g.:
+For example:
 
 - Allowed Behaviour of the Merge button ([#11](https://github.com/ably/repository-audit/issues/11))
 - Branch protection rule for the default branch (typically `main`)
@@ -80,7 +80,7 @@ The questions that needed answering in order to bring this tool to life were:
     - The GitHub browser UI provides us a free rendering engine for markdown
     - If formatted logically, markdown is very git-diff friendly
     - _Keeps It Simple_ and is universally understood by many
-5. **Where does the report output go?** Downstream repository. See previous answer regarding markdown for the reason why this needs be no more complex than that.
+5. **Where does the report output go?** [Downstream repository](https://github.com/ably/repository-audit-report). See previous answer regarding markdown for the reason why this needs be no more complex than that.
 6. **Is there any potential for monitoring changes to the report output over time?** Yes. Each update to the report is a `git` commit and will generally only update a small part of the report reflecting what has changed since the report was last run. This means we can use `git` tools and the GitHub browser UI to examine these report diffs over time.
 
 ## Runtime Requirements
@@ -128,7 +128,7 @@ Creation and installation of a deploy key involves the following steps:
 
 #### 1. Generate the key pair
 
-Using `ssh-keygen` on your local machine - e.g.:
+Using `ssh-keygen` on your local machine - for example:
 
     ssh-keygen -f /tmp/ably-deploy-key -t ed25519 -C "ably-repository-audit[bot]@noreply.ably.com"
 
@@ -152,7 +152,7 @@ and click 'Add deploy key'.
 
 Paste your clipboard contents into 'Key'.
 
-Enter something logical for 'Title' - e.g.: `repository-audit publish key`
+Enter something logical for 'Title' - for example: `repository-audit publish key`
 
 #### 3. Install private key
 
@@ -168,7 +168,7 @@ and click 'New repository secret'.
 
 Paste your clipboard contents into 'Value'.
 
-Provide the name expected by the workflow into 'Name' - i.e.: `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
+Provide the name expected by the workflow into 'Name': `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
 
 #### 4. Cleanup locally
 
