@@ -55,7 +55,7 @@ seamlessly move from repository to repository with minimal friction. This means 
 
 #### Guard Rails / Workflow
 
-As a company Ably are very focussed on a 'written first' approach to the way that we approach our work.
+As a company Ably is very focussed on a 'written first' approach to the way that we approach our work.
 
 An implicit principle of written first is that we aim to keep things [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
 meaning that we would rather be able to point people towards a canonical location where process-oriented instructions live.
