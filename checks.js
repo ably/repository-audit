@@ -50,7 +50,7 @@ class ResultList {
   add(result) {
     if (result === PASS) return; // PASS is our default state and we're only accumulating negative results
     this.negativeResults.push(result);
-    if (this.indication === FAIL) return; // game over (i.e. don't overwrite existing FAIL if this result is a WARN)
+    if (this.indication === FAIL) return; // game over (that is, don't overwrite existing FAIL if this result is a WARN)
     this.indication = result.indication;
   }
 
