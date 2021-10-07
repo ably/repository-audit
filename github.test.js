@@ -69,7 +69,7 @@ describe('branch', () => {
     };
 
     // eslint-disable-next-line no-unused-expressions
-    expect(() => { new GitHub(badEnv).branch; }).toThrow();
+    expect(() => { new GitHub(badEnv).branch; }).toThrow('Event name "eat_pie" not recognised');
   });
 });
 
