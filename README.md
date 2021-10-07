@@ -20,7 +20,7 @@ Oversight. Monitoring.
 While GitHub clearly understand that their users have a desire to gain a bird's eye view of activity across their organization(s)
 (see [their September 2021 announcement of 'audit log streaming' entering public beta](https://github.blog/2021-09-16-audit-log-streaming-public-beta/)),
 the reality is that with our current interfaces to GitHub (being `git` clients and their browser UI) we have limitations,
-down to the manually-driven nature of all these interactions:
+due to the manual nature of all these interactions:
 
 - To check if a repository is configured correctly we need to navigate via the browser UI to its settings page
 - To check if two repositories are configured the same then we need to load up two browser UIs side-by-side
