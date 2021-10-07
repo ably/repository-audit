@@ -52,7 +52,7 @@ class GitHub {
     }
   }
 
-  githubServerURL() {
+  get githubServerURL() {
     const { GITHUB_SERVER_URL } = this.processEnvironment;
     return new URL(GITHUB_SERVER_URL ?? 'https://github.com/');
   }
@@ -65,7 +65,7 @@ class GitHub {
    * @returns {URL} The absolute URL to visit this repository in a browser.
    */
   repositoryURL(organizationName, repositoryName) {
-    return new URL(`${organizationName}/${repositoryName}`, this.githubServerURL());
+    return new URL(`${organizationName}/${repositoryName}`, this.githubServerURL);
   }
 
   /**
@@ -80,7 +80,7 @@ class GitHub {
       // this is the `ably/repository-audit` repository at all.
       return null;
     }
-    return new URL(GITHUB_REPOSITORY, this.githubServerURL());
+    return new URL(`${GITHUB_REPOSITORY}/`, this.githubServerURL);
   }
 
   /**

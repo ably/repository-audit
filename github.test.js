@@ -146,7 +146,7 @@ describe('currentRepositoryURL', () => {
     expect(typeof url).toBe('object'); // https://nodejs.org/docs/latest-v14.x/api/url.html
     expect(url.hostname).toBe('github.com');
     expect(url.protocol).toBe('https:');
-    expect(url.pathname).toBe('/ably/repository-audit');
+    expect(url.pathname).toBe('/ably/repository-audit/');
   });
 });
 
