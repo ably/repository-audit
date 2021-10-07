@@ -59,6 +59,11 @@ async function audit() {
           hasProjectsEnabled
           hasWikiEnabled
           forkingAllowed
+          deleteBranchOnMerge
+          rebaseMergeAllowed
+          squashMergeAllowed
+          mergeCommitAllowed
+          autoMergeAllowed
           defaultBranchRef {
             name
           }
@@ -93,6 +98,7 @@ async function audit() {
     A: 'Validates that there is a default branch and it is called `main`.',
     B: 'Validates that there is a branch protection rule defined for the default branch and that it has been configured correctly.',
     C: 'Validates that fundamental GitHub features are enabled or disabled as appropriate.',
+    D: 'Validates the configuration of the Merge button.',
   };
   const checkCodes = Object.getOwnPropertyNames(checkDescriptions).sort();
 
@@ -123,6 +129,7 @@ async function audit() {
         A: checks.defaultBranchName(),
         B: checks.branchProtectionRuleForDefaultBranch(),
         C: checks.features(),
+        D: checks.mergeButton(),
       });
     });
     repositoryCount += repositoryNodes.length;
