@@ -58,10 +58,10 @@ class GitHub {
   }
 
   /**
-   * e.g. `https://github.com/ably/ably-java`
+   * For example: `https://github.com/ably/ably-java`
    *
-   * @param {string} organizationName The org name (e.g. `ably`).
-   * @param {string} repositoryName The repository name (e.g. `ably-java`).
+   * @param {string} organizationName The org name (for example: `ably`).
+   * @param {string} repositoryName The repository name (for example: `ably-java`).
    * @returns {URL} The absolute URL to visit this repository in a browser.
    */
   repositoryURL(organizationName, repositoryName) {
@@ -69,7 +69,7 @@ class GitHub {
   }
 
   /**
-   * e.g. `https://github.com/ably/repository-audit`
+   * For example: `https://github.com/ably/repository-audit`
    *
    * @returns {URL?} The absolute URL to visit the current repository in a browser, or `null` if indeterminable.
    */
@@ -86,8 +86,8 @@ class GitHub {
   /**
    * Unpacks the branch name from `GITHUB_REF` when `GITHUB_EVENT_NAME` is known to be `'push'`.
    *
-   * @param {string} ref The GitHub ref - e.g. `refs/heads/main`
-   * @returns {string} The branch name - e.g. `main` or `feature/some-new-thing`
+   * @param {string} ref The GitHub ref (for example: `refs/heads/main`).
+   * @returns {string} The branch name (for example: `main` or `feature/some-new-thing`).
    */
   static branchFromPushEventRef(ref) {
     if (!ref || typeof ref !== 'string') {
