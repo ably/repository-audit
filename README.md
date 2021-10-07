@@ -1,4 +1,4 @@
-# Ably SDK Team Repository Audit
+# Ably Repository Audit
 
 [![.github/workflows/check.yml](https://github.com/ably/repository-audit/actions/workflows/check.yml/badge.svg)](https://github.com/ably/repository-audit/actions/workflows/check.yml)
 
@@ -10,7 +10,7 @@ This tool is being designed by the SDK Team at Ably to provide oversight of our 
 those public in our [`ably` org](https://github.com/ably/), and beyond.
 
 It is partnered with the
-['Ably SDK Team Repository Audit' GitHub App](https://github.com/apps/ably-sdk-team-repository-audit),
+['Ably Repository Audit' GitHub App](https://github.com/apps/ably-repository-audit),
 where this tool authenticates as that app in order to do its work.
 
 ### Why?
@@ -87,7 +87,7 @@ The questions that needed answering in order to bring this tool to life were:
 
 This tool needs a private key for the GitHub App in order to sign access token requests.
 That private key is created and downloaded, in PEM format, from the 'Private keys' area within the app's 'General' settings
-([here](https://github.com/organizations/ably/settings/apps/ably-sdk-team-repository-audit),
+([here](https://github.com/organizations/ably/settings/apps/ably-repository-audit),
 only accessible to those with permissions to act as
 [GitHub App managers](https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/permission-levels-for-an-organization#github-app-managers)).
 This tool expects that file to be at:
