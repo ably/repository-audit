@@ -62,7 +62,7 @@ meaning that we would rather be able to point people towards a canonical locatio
 In other words, our response to a query about the way to do something should be along the lines of
 'look over there, where this is documented'.
 
-Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (i.e. it's a switch or rule that was installed somewhere).
+Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (because it's a switch or rule that was installed somewhere).
 In which case, this tool is here to periodically check that those guard rails are consistently configured correctly.
 e.g.:
 
@@ -168,7 +168,7 @@ and click 'New repository secret'.
 
 Paste your clipboard contents into 'Value'.
 
-Provide the name expected by the workflow into 'Name' - i.e.: `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
+Provide the name expected by the workflow into 'Name': `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
 
 #### 4. Cleanup locally
 
