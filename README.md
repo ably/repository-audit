@@ -80,7 +80,7 @@ The questions that needed answering in order to bring this tool to life were:
     - The GitHub browser UI provides us a free rendering engine for markdown
     - If formatted logically, markdown is very git-diff friendly
     - _Keeps It Simple_ and is universally understood by many
-5. **Where does the report output go?** Downstream repository. See previous answer regarding markdown for the reason why this needs be no more complex than that.
+5. **Where does the report output go?** [Downstream repository](https://github.com/ably/repository-audit-report). See previous answer regarding markdown for the reason why this needs be no more complex than that.
 6. **Is there any potential for monitoring changes to the report output over time?** Yes. Each update to the report is a `git` commit and will generally only update a small part of the report reflecting what has changed since the report was last run. This means we can use `git` tools and the GitHub browser UI to examine these report diffs over time.
 
 ## Runtime Requirements
