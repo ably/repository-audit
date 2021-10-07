@@ -57,7 +57,7 @@ seamlessly move from repository to repository with minimal friction. This means 
 
 As a company Ably is very focussed on a 'written first' approach to the way that we approach our work.
 
-An implicit principle of written first is that we aim to keep things [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
+An implicit principle of written first is that we aim to keep things [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself),
 meaning that we would rather be able to point people towards a canonical location where process-oriented instructions live.
 In other words, our response to a query about the way to do something should be along the lines of
 'look over there, where this is documented'.
