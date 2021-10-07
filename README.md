@@ -31,7 +31,7 @@ due to the manual nature of all these interactions:
 ### What?
 
 Essentially a [lint](https://en.wikipedia.org/wiki/Lint_(software)) tool for our repository configurations.
-While this tool may examine repository _contents_ (a.k.a. source code) in time (e.g. to check for presence of standard files),
+While this tool may examine repository _contents_ (a.k.a. source code) in time (for example, to check for presence of standard files),
 we're focussing initially on settings which are available to most of us only via GitHub's browser UI.
 
 #### Naming / Vocabulary
@@ -64,7 +64,7 @@ In other words, our response to a query about the way to do something should be 
 
 Extending this principle out - where it is possible for us to install guard rails that naturally, innately steer people onto the correct tracks - we don't have to explicitly write this down in plain English (because it's a switch or rule that was installed somewhere).
 In which case, this tool is here to periodically check that those guard rails are consistently configured correctly.
-e.g.:
+For example:
 
 - Allowed Behaviour of the Merge button ([#11](https://github.com/ably/repository-audit/issues/11))
 - Branch protection rule for the default branch (typically `main`)
@@ -128,7 +128,7 @@ Creation and installation of a deploy key involves the following steps:
 
 #### 1. Generate the key pair
 
-Using `ssh-keygen` on your local machine - e.g.:
+Using `ssh-keygen` on your local machine - for example:
 
     ssh-keygen -f /tmp/ably-deploy-key -t ed25519 -C "ably-repository-audit[bot]@noreply.ably.com"
 
@@ -152,7 +152,7 @@ and click 'Add deploy key'.
 
 Paste your clipboard contents into 'Key'.
 
-Enter something logical for 'Title' - e.g.: `repository-audit publish key`
+Enter something logical for 'Title' - for example: `repository-audit publish key`
 
 #### 3. Install private key
 
