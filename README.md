@@ -36,7 +36,7 @@ we're focussing initially on settings which are available to most of us only via
 
 #### Naming / Vocabulary
 
-We care about others and have empathy for their views ('tech needs humanity' is a core Ably value).
+We care about others and have empathy for their views ('tech needs humanity' is [one of Ably's core values](https://ably.com/blog/ably-values)).
 It's important that we make concerted efforts to remove non-inclusive terminology from our nomenclature.
 This includes the branch names we use in our repositories, especially the default branch names, for both public and private repositories.
 
