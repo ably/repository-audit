@@ -105,7 +105,7 @@ async function audit() {
   // Create empty arrays and maps for results collection.
   const publicRepositoryNames = [];
   const privateRepositoryNames = [];
-  const checkResults = new Map(); // e.g. { 'ably-js': { A: 'green', B: 'red' } }
+  const checkResults = new Map(); // for example: { 'ably-js': { A: 'green', B: 'red' } }
 
   // Run the asynchronous query / queries.
   const startDate = new Date();
@@ -147,7 +147,7 @@ async function audit() {
   /**
    * Renders the content for the table row summarising check results for a repository.
    *
-   * @param {string} name The repository name - e.g. 'ably-java'.
+   * @param {string} name The repository name (for example: 'ably-java').
    * @returns {string[]} Markdown-formatted content for this cells in this row.
    */
   function repositoryResultCells(name) {
