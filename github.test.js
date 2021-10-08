@@ -61,6 +61,20 @@ describe('branch', () => {
     expect(new GitHub(env).branch).toBe('main');
   });
 
+  it('is populated when GitHub environment for "schedule" event is available', () => {
+    // see: https://github.com/ably/repository-audit/issues/29
+    const env = {
+      GITHUB_REF: 'some unknown value 1',
+      GITHUB_EVENT_NAME: 'schedule',
+      GITHUB_HEAD_REF: 'some unknown value 2',
+    };
+
+    const { branch } = new GitHub(env);
+    expect(typeof branch).toBe('string');
+    expect(branch.length).toBeGreaterThan(0);
+    expect(branch.trim().length).toBeGreaterThan(0);
+  });
+
   it('fails if the GitHub environment is available but the event name is not recognised', () => {
     const badEnv = {
       GITHUB_REF: 'foo',
@@ -69,7 +83,7 @@ describe('branch', () => {
     };
 
     // eslint-disable-next-line no-unused-expressions
-    expect(() => { new GitHub(badEnv).branch; }).toThrow();
+    expect(() => { new GitHub(badEnv).branch; }).toThrow('Event name "eat_pie" not recognised');
   });
 });
 

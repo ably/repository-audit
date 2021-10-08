@@ -38,8 +38,9 @@ class GitHub {
       GITHUB_HEAD_REF,
     } = this.processEnvironment;
 
+    const currentBranchUsingGit = () => childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
     if (!(GITHUB_REF || GITHUB_EVENT_NAME || GITHUB_HEAD_REF)) {
-      return childProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+      return currentBranchUsingGit();
     }
 
     switch (GITHUB_EVENT_NAME) {
@@ -47,6 +48,11 @@ class GitHub {
         return GITHUB_HEAD_REF;
       case 'push':
         return GitHub.branchFromPushEventRef(GITHUB_REF);
+      case 'schedule':
+        // Temporary debug output to observe GitHub env in `main` branch in order to identify what we can use here
+        // instead of resorting to `currentBranchUsingGit`. See: https://github.com/ably/repository-audit/issues/29
+        console.log(`GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}\nGITHUB_REF: ${GITHUB_REF}\n${GITHUB_HEAD_REF}`);
+        return currentBranchUsingGit();
       default:
         throw new Error(`Event name "${GITHUB_EVENT_NAME}" not recognised.`);
     }
