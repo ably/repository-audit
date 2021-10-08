@@ -32,7 +32,7 @@ main() {
 publish() {
   local repo="${TMPDIR}/repo"
   info "Cloning from origin into ${repo}..."
-  git clone git@github.com:ably/repository-audit-report "${repo}"
+  git clone git@github.com:ably/repository-audit-report-internal "${repo}"
 
   info "Copying generated report files to repository clone..."
   cp output/report/*.md "${repo}"

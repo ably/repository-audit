@@ -80,7 +80,7 @@ The questions that needed answering in order to bring this tool to life were:
     - The GitHub browser UI provides us a free rendering engine for markdown
     - If formatted logically, markdown is very git-diff friendly
     - _Keeps It Simple_ and is universally understood by many
-5. **Where does the report output go?** [Downstream repository](https://github.com/ably/repository-audit-report). See previous answer regarding markdown for the reason why this needs be no more complex than that.
+5. **Where does the report output go?** [Downstream repository](https://github.com/ably/repository-audit-report-internal). See previous answer regarding markdown for the reason why this needs be no more complex than that.
 6. **Is there any potential for monitoring changes to the report output over time?** Yes. Each update to the report is a `git` commit and will generally only update a small part of the report reflecting what has changed since the report was last run. This means we can use `git` tools and the GitHub browser UI to examine these report diffs over time.
 
 ## Runtime Requirements
@@ -119,7 +119,7 @@ The naming of these secrets, in particular the need to avoid the `GITHUB_` prefi
 ### Deploy Key for Downstream Repository
 
 The [run workflow](.github/workflows/run.yml) publishes updates to the report as a Git commit to the downstream repository
-[ably/repository-audit-report](https://github.com/ably/repository-audit-report)
+[ably/repository-audit-report-internal](https://github.com/ably/repository-audit-report-internal)
 (private, only visible to teams within the `ably` org).
 
 In order to do this it uses the `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY` secret.
@@ -143,9 +143,9 @@ Copy file contents to clipboard:
     cat /tmp/ably-deploy-key.pub | pbcopy
 
 Navigate to the
-[downstream repository](https://github.com/ably/repository-audit-report)'s
+[downstream repository](https://github.com/ably/repository-audit-report-internal)'s
 'Deploy keys' in 'Settings'
-([here](https://github.com/ably/repository-audit-report/settings/keys),
+([here](https://github.com/ably/repository-audit-report-internal/settings/keys),
 requires `Admin`
 [permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
 and click 'Add deploy key'.
