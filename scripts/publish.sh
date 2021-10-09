@@ -90,7 +90,7 @@ publish() {
 
   if [ ! -z "${pullRequestNumber}" ]; then
     info "Pushing changes up to origin preview branch..."
-    git push --set-upstream origin "${branchName}"
+    git push --set-upstream origin "${previewBranchName}"
   else
     info "Pushing changes up to origin main branch..."
     git push origin main
