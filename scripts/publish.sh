@@ -46,9 +46,6 @@ publish() {
   info "Cloning from origin into ${repo}..."
   git clone git@github.com:ably/repository-audit-report-internal "${repo}"
 
-  info "Copying generated report files to repository clone..."
-  cp output/report/*.md "${repo}"
-
   info "Changing working directory to repository clone to perform git operations..."
   cd "${repo}"
 
@@ -70,6 +67,11 @@ publish() {
   else
     info "Will publish to main branch."
   fi
+
+  info "Copying generated report files to repository clone..."
+  cd -
+  cp output/report/*.md "${repo}"
+  cd -
 
   # check there are some changes to publish
   local status="$(git status --porcelain)"
