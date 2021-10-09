@@ -58,11 +58,11 @@ publish() {
     info "Checking for existing preview branch for this pull request..."
     local lsRemote=$(git ls-remote --heads origin "${previewBranchName}")
     if [[ -z "${lsRemote}" ]]; then
-        info "Checking out existing branch..."
-        git checkout "${previewBranchName}"
-    else
         info "Creating new branch..."
         git checkout -b "${previewBranchName}"
+    else
+        info "Checking out existing branch..."
+        git checkout "${previewBranchName}"
     fi
   else
     info "Will publish to main branch."
