@@ -88,7 +88,7 @@ publish() {
   git add .
   git commit "--file=${WORKDIR}/output/commit-message.txt"
 
-  if [ -z "${pullRequestNumber}" ]; then
+  if [ ! -z "${pullRequestNumber}" ]; then
     info "Pushing changes up to origin preview branch..."
     git push --set-upstream origin "${branchName}"
   else
