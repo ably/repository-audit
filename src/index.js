@@ -224,7 +224,8 @@ async function audit() {
       // Only create a section if it wasn't a PASS.
       const result = results[code];
       if (!result.isPass) {
-        md.h(3, `\`${name}\` check ${code}`);
+        const interactiveName = `[${name}](${github.repositoryURL(orgName, name)})`;
+        md.h(3, `${interactiveName} check ${code}`);
         md.line(`${result.emoji} ${result.description}`);
       }
     });
