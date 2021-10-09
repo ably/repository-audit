@@ -58,20 +58,14 @@ publish() {
     info "Pull Request Number: ${pullRequestNumber}"
     info "Preview Branch Name: ${previewBranchName}"
 
-    # Use git's ls-remote command to check for existing preview branch.
-    # For this one command we're disabling (with `set +e`) the instruction to base to exit if a command returns non-zero exit status.
     info "Checking for existing preview branch for this pull request..."
-    set +e
-    $(git ls-remote --exit-code --heads origin "${previewBranchName}")
-    local gitLsRemoteExitCode=$?
-    set -e
-
-    if [ $gitLsRemoteExitCode -eq 2 ]; then
-        info "Creating new branch..."
-        git checkout -b "${previewBranchName}"
-    else
+    local lsRemote=$(git ls-remote --heads origin "${previewBranchName}")
+    if [[ -z "${lsRemote}" ]]; then
         info "Checking out existing branch..."
         git checkout "${previewBranchName}"
+    else
+        info "Creating new branch..."
+        git checkout -b "${previewBranchName}"
     fi
   else
     info "Will publish to main branch."
