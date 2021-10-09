@@ -6,7 +6,6 @@
 set -e
 
 # Configure ssh
-eval $(ssh-agent -s)
 ssh-add ssh-private-key.pem
 
 # Configure git

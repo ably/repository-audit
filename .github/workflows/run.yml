@@ -39,5 +39,6 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
           chmod 400 ssh-private-key.pem
+          eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
           scripts/publish.sh
