@@ -27,8 +27,6 @@ main() {
   info "Done!"
 }
 
-# publish_go builds the Go generator programs in go/cmd, uses them to generate
-# Go code, and pushes the result to the ably-common-go repository
 publish() {
   local repo="${TMPDIR}/repo"
   info "Cloning from origin into ${repo}..."
