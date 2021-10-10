@@ -63,16 +63,13 @@ describe('branch', () => {
 
   it('is populated when GitHub environment for "schedule" event is available', () => {
     // see: https://github.com/ably/repository-audit/issues/29
+    // GITHUB_REF is `refs/heads/main` for scheduled runs on the default branch (assuming the default branch is `main`)
     const env = {
-      GITHUB_REF: 'some unknown value 1',
+      GITHUB_REF: 'refs/heads/main',
       GITHUB_EVENT_NAME: 'schedule',
-      GITHUB_HEAD_REF: 'some unknown value 2',
     };
 
-    const { branch } = new GitHub(env);
-    expect(typeof branch).toBe('string');
-    expect(branch.length).toBeGreaterThan(0);
-    expect(branch.trim().length).toBeGreaterThan(0);
+    expect(new GitHub(env).branch).toBe('main');
   });
 
   it('fails if the GitHub environment is available but the event name is not recognised', () => {
