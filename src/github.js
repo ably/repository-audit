@@ -45,7 +45,7 @@ class GitHub {
     switch (GITHUB_EVENT_NAME) {
       case 'pull_request':
         return GITHUB_HEAD_REF;
-      case 'push':
+      case 'push': // fall-through
       case 'schedule':
         return GitHub.branchFromPushEventRef(GITHUB_REF);
       default:
