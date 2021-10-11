@@ -40,7 +40,5 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
           chmod 400 ssh-private-key.pem
           eval $(ssh-agent -s)
-          ssh-add ssh-private-key.pem
-          git config --global user.name "Ably Repository Audit [bot]"
-          git config --global user.email "ably-repository-audit[bot]@noreply.ably.com"
+          scripts/configure-ssh-and-git.sh
           scripts/publish.sh
