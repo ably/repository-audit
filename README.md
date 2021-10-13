@@ -122,7 +122,7 @@ The naming of these secrets, in particular the need to avoid the `GITHUB_` prefi
 The [run workflow](.github/workflows/run.yml) publishes updates to the report as Git commits to the downstream repositories:
 
 - [ably/repository-audit-report-internal](https://github.com/ably/repository-audit-report-internal): private, only visible to teams within the `ably` org
-- [ably/repository-audit-report](https://github.com/ably/repository-audit-report-internal): public, open
+- [ably/repository-audit-report](https://github.com/ably/repository-audit-report): public, open
 
 In order to do this it uses the `INTERNAL_REPORT_REPOSITORY_SSH_KEY` and `PUBLIC_REPORT_REPOSITORY_SSH_KEY` secrets.
 
