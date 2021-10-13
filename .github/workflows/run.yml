@@ -33,7 +33,7 @@ jobs:
           echo "$APP_PRIVATE_KEY" > app-private-key.pem
           node .
 
-      - name: Publish Report
+      - name: Publish Internal Report
         env:
           SSH_PRIVATE_KEY: ${{ secrets.INTERNAL_REPORT_REPOSITORY_SSH_KEY }}
         run: |
@@ -41,4 +41,14 @@ jobs:
           chmod 400 ssh-private-key.pem
           eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
-          scripts/publish.sh ably/repository-audit-report-internal
+          scripts/publish.sh internal ably/repository-audit-report-internal
+
+      - name: Publish Public Report
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PUBLIC_REPORT_REPOSITORY_SSH_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
+          chmod 400 ssh-private-key.pem
+          eval $(ssh-agent -s)
+          scripts/configure-ssh-and-git.sh
+          scripts/publish.sh public ably/repository-audit-report

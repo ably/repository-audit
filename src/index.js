@@ -167,16 +167,13 @@ async function audit() {
 
   // Create output directory in standard location within working directory.
   // The expectation is that this tool is run from the root of the repository.
-  const outputDirectoryName = 'output';
-  const reportDirectoryName = path.join(outputDirectoryName, 'report');
+  const outputDirectoryPath = 'output';
+  createDirectory(outputDirectoryPath);
   const fileName = `${orgName}.md`;
-  if (!fs.existsSync(reportDirectoryName)) {
-    fs.mkdirSync(reportDirectoryName, { recursive: true });
-  }
 
   // Write commit message.
   const { sha, branch, currentRepositoryURL } = github;
-  const commitMessage = fs.createWriteStream(path.join(outputDirectoryName, 'commit-message.txt'));
+  const commitMessage = fs.createWriteStream(path.join(outputDirectoryPath, 'commit-message.txt'));
   commitMessage.write(`Generate report at ${startDate.toISOString()}.\n\n`);
   commitMessage.write(`Queries finished: ${endDate.toISOString()}\n`);
   if (currentRepositoryURL) {
@@ -193,43 +190,69 @@ async function audit() {
     commitMessage.end();
   });
 
-  // Write report.
-  const md = new MarkdownWriter(fs.createWriteStream(path.join(reportDirectoryName, fileName)));
+  const publicFolderName = 'public';
+  const internalFolderName = 'internal';
 
-  md.h(1, `Repository Audit for \`${orgName}\``);
+  /**
+   * Writes the markdown-formatted report.
+   *
+   * @param {string} folderName The folder within the output directory to write the report to.
+   * @param {string[]} repositoryNames The names of the repositories to be written to this report.
+   */
+  async function writeReport(folderName, repositoryNames) {
+    const directoryPath = path.join(outputDirectoryPath, folderName);
+    createDirectory(directoryPath);
+    const md = new MarkdownWriter(fs.createWriteStream(path.join(directoryPath, fileName)));
 
-  md.h(2, 'Public Repositories');
-  md.tableHead(resultHeaderCells);
-  publicRepositoryNames.sort().forEach((name) => {
-    md.tableBodyLine(repositoryResultCells(name));
-  });
+    const isInternal = folderName === internalFolderName;
+    md.h(1, `Repository Audit for \`${orgName}\`${isInternal ? ' (INTERNAL)' : ''}`);
 
-  md.h(2, 'Private Repositories');
-  md.tableHead(resultHeaderCells);
-  privateRepositoryNames.sort().forEach((name) => {
-    md.tableBodyLine(repositoryResultCells(name));
-  });
+    if (isInternal) {
+      md.lineWithSoftBreak(`:warning: This report reveals details about **PRIVATE** repositories within the \`${orgName}\` org.`);
+      md.line('**CONFIDENTIAL**. Please think before exporting or otherwise sharing the contents outside of the canonical presentation context.');
+    }
 
-  md.h(2, 'Checks');
-  checkCodes.forEach((code) => {
-    md.h(3, `Check: ${code}`);
-    md.line(checkDescriptions[code]);
-  });
-
-  md.h(2, 'Failure Details');
-  const allRepositoryNames = publicRepositoryNames.concat(privateRepositoryNames).sort();
-  allRepositoryNames.forEach((name) => {
-    const results = checkResults.get(name);
-    checkCodes.forEach((code) => {
-      // Only create a section if it wasn't a PASS.
-      const result = results[code];
-      if (!result.isPass) {
-        const interactiveName = `[${name}](${github.repositoryURL(orgName, name)})`;
-        md.h(3, `${interactiveName} check ${code}`);
-        md.line(`${result.emoji} ${result.description}`);
-      }
+    md.h(2, 'Repositories');
+    md.tableHead(resultHeaderCells);
+    repositoryNames.sort().forEach((name) => {
+      md.tableBodyLine(repositoryResultCells(name));
     });
-  });
 
-  await md.end();
+    md.h(2, 'Checks');
+    checkCodes.forEach((code) => {
+      md.h(3, `Check: ${code}`);
+      md.line(checkDescriptions[code]);
+    });
+
+    md.h(2, 'Failure Details');
+    repositoryNames.forEach((name) => {
+      const results = checkResults.get(name);
+      checkCodes.forEach((code) => {
+        // Only create a section if it wasn't a PASS.
+        const result = results[code];
+        if (!result.isPass) {
+          const interactiveName = `[${name}](${github.repositoryURL(orgName, name)})`;
+          md.h(3, `${interactiveName} check ${code}`);
+          md.line(`${result.emoji} ${result.description}`);
+        }
+      });
+    });
+
+    await md.end();
+  }
+
+  // Write reports.
+  writeReport(publicFolderName, publicRepositoryNames);
+  writeReport(internalFolderName, privateRepositoryNames);
+}
+
+/**
+ * Creates a directory at the given path if it doesn't exist, recursively if necessary.
+ *
+ * @param {string} directoryPath The directory path. Can be relative to current working directory.
+ */
+function createDirectory(directoryPath) {
+  if (!fs.existsSync(directoryPath)) {
+    fs.mkdirSync(directoryPath, { recursive: true });
+  }
 }

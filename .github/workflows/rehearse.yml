@@ -23,7 +23,7 @@ jobs:
           node .
           rm app-private-key.pem
 
-      - name: Publish Report Preview
+      - name: Publish Internal Report Preview
         env:
           SSH_PRIVATE_KEY: ${{ secrets.INTERNAL_REPORT_REPOSITORY_SSH_KEY }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
@@ -32,4 +32,15 @@ jobs:
           chmod 400 ssh-private-key.pem
           eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
-          scripts/publish.sh ably/repository-audit-report-internal "${PULL_REQUEST_NUMBER}"
+          scripts/publish.sh internal ably/repository-audit-report-internal "${PULL_REQUEST_NUMBER}"
+
+      - name: Publish Public Report Preview
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PUBLIC_REPORT_REPOSITORY_SSH_KEY }}
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
+          chmod 400 ssh-private-key.pem
+          eval $(ssh-agent -s)
+          scripts/configure-ssh-and-git.sh
+          scripts/publish.sh public ably/repository-audit-report "${PULL_REQUEST_NUMBER}"

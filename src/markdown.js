@@ -49,6 +49,17 @@ class Writer {
     this.lastLineHadSpaceAround = spaceAround;
   }
 
+  /**
+   * Writes the given string plus a terminating newline character, preceded by soft-break indication.
+   * This means that the next line will appear closer to this one when rendered.
+   * See: https://github.github.com/gfm/#soft-line-breaks
+   *
+   * @param {string} line Contents for the line.
+   */
+  lineWithSoftBreak(line) {
+    this.line(`${line}  `);
+  }
+
   async end() {
     const stream = this.writeStream;
     await new Promise((resolve) => {
