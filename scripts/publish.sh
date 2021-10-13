@@ -31,7 +31,7 @@ main() {
 
 # Check that there is something to publish.
 # Arguments, in order:
-# - Source folder within the output fulder - for example "public". Required.
+# - Source folder within the output folder - for example "public". Required.
 verify() {
   local sourceFolder=$1
   info "Verifying presence of report output..."
@@ -41,7 +41,7 @@ verify() {
 
 # Clone target repository, modify, commit and push.
 # Arguments, in order:
-# - Source folder within the output fulder - for example "public". Required.
+# - Source folder within the output folder - for example "public". Required.
 # - Target Repository including org - for example "ably/repository-audit-report". Required.
 # - Pull Request Number. Optional.
 publish() {
