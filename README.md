@@ -81,7 +81,7 @@ The questions that needed answering in order to bring this tool to life were:
     - The GitHub browser UI provides us a free rendering engine for markdown
     - If formatted logically, markdown is very git-diff friendly
     - _Keeps It Simple_ and is universally understood by many
-5. **Where does the report output go?** [Downstream repository](https://github.com/ably/repository-audit-report-internal). See previous answer regarding markdown for the reason why this needs be no more complex than that.
+5. **Where does the report output go?** Downstream repositories ([internal/private](https://github.com/ably/repository-audit-report-internal) and [public](https://github.com/ably/repository-audit-report)). See previous answer regarding markdown for the reason why this needs be no more complex than that.
 6. **Is there any potential for monitoring changes to the report output over time?** Yes. Each update to the report is a `git` commit and will generally only update a small part of the report reflecting what has changed since the report was last run. This means we can use `git` tools and the GitHub browser UI to examine these report diffs over time.
 
 ## Runtime Requirements
@@ -117,13 +117,14 @@ The naming of these secrets, in particular the need to avoid the `GITHUB_` prefi
 - [Security Guides: Encrypted secrets: Naming your secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#naming-your-secrets):
 - [Learn GitHub Actions: Environment variables: Default environment variables](https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables)
 
-### Deploy Key for Downstream Repository
+### Deploy Keys for Downstream Repositories
 
-The [run workflow](.github/workflows/run.yml) publishes updates to the report as a Git commit to the downstream repository
-[ably/repository-audit-report-internal](https://github.com/ably/repository-audit-report-internal)
-(private, only visible to teams within the `ably` org).
+The [run workflow](.github/workflows/run.yml) publishes updates to the report as Git commits to the downstream repositories:
 
-In order to do this it uses the `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY` secret.
+- [ably/repository-audit-report-internal](https://github.com/ably/repository-audit-report-internal): private, only visible to teams within the `ably` org
+- [ably/repository-audit-report](https://github.com/ably/repository-audit-report): public, open
+
+In order to do this it uses the `INTERNAL_REPORT_REPOSITORY_SSH_KEY` and `PUBLIC_REPORT_REPOSITORY_SSH_KEY` secrets.
 
 Creation and installation of a deploy key involves the following steps:
 
@@ -143,10 +144,9 @@ Copy file contents to clipboard:
 
     cat /tmp/ably-deploy-key.pub | pbcopy
 
-Navigate to the
-[downstream repository](https://github.com/ably/repository-audit-report-internal)'s
-'Deploy keys' in 'Settings'
-([here](https://github.com/ably/repository-audit-report-internal/settings/keys),
+Navigate to the downstream repository's 'Deploy keys' in 'Settings'
+([here](https://github.com/ably/repository-audit-report-internal/settings/keys) for private/internal,
+[here](https://github.com/ably/repository-audit-report/settings/keys) for public,
 requires `Admin`
 [permissions](https://docs.github.com/en/organizations/managing-access-to-your-organizations-repositories/repository-permission-levels-for-an-organization))
 and click 'Add deploy key'.
@@ -169,7 +169,10 @@ and click 'New repository secret'.
 
 Paste your clipboard contents into 'Value'.
 
-Provide the name expected by the workflow into 'Name': `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
+Provide the name expected by the workflow into 'Name':
+
+- `INTERNAL_REPORT_REPOSITORY_SSH_KEY` for the private/internal downstream target repository
+- `PUBLIC_REPORT_REPOSITORY_SSH_KEY` for the public downstream target repository
 
 #### 4. Cleanup locally
 
