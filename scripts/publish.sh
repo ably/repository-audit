@@ -78,7 +78,7 @@ publish() {
 
   info "Copying generated report files to repository clone..."
   cd -
-  cp "output/${sourceFolder}/*.md" "${repo}"
+  cp "output/${sourceFolder}/ably.md" "${repo}"
   cd -
 
   # check there are some changes to publish
