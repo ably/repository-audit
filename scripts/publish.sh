@@ -36,15 +36,17 @@ verify() {
 }
 
 # Clone target repository, modify, commit and push.
-# Arguments:
+# Arguments, in order:
+# - Target Repository including org - for example "ably/repository-audit-report". Required.
 # - Pull Request Number. Optional.
 publish() {
-  local pullRequestNumber=$1
+  local targetRepository=$1
+  local pullRequestNumber=$2
   local previewBranchName="preview/pulls/${pullRequestNumber}"
 
   local repo="${TMPDIR}/repo"
   info "Cloning from origin into ${repo}..."
-  git clone git@github.com:ably/repository-audit-report-internal "${repo}"
+  git clone "git@github.com:${targetRepository}" "${repo}"
 
   info "Changing working directory to repository clone to perform git operations..."
   cd "${repo}"

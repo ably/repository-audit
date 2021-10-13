@@ -32,4 +32,4 @@ jobs:
           chmod 400 ssh-private-key.pem
           eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
-          scripts/publish.sh "${PULL_REQUEST_NUMBER}"
+          scripts/publish.sh ably/repository-audit-report-internal "${PULL_REQUEST_NUMBER}"
