@@ -1,6 +1,7 @@
 # Ably Repository Audit
 
-[![.github/workflows/check.yml](https://github.com/ably/repository-audit/actions/workflows/check.yml/badge.svg)](https://github.com/ably/repository-audit/actions/workflows/check.yml)
+[![Check Workflow Status](https://github.com/ably/repository-audit/actions/workflows/check.yml/badge.svg)](https://github.com/ably/repository-audit/actions/workflows/check.yml)
+[![Run Workflow Status](https://github.com/ably/repository-audit/actions/workflows/run.yml/badge.svg)](https://github.com/ably/repository-audit/actions/workflows/run.yml)
 
 ## Overview
 
