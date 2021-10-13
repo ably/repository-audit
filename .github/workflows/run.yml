@@ -42,6 +42,7 @@ jobs:
           eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
           scripts/publish.sh internal ably/repository-audit-report-internal
+          rm -fv ssh-private-key.pem
 
       - name: Publish Public Report
         env:
@@ -52,3 +53,4 @@ jobs:
           eval $(ssh-agent -s)
           scripts/configure-ssh-and-git.sh
           scripts/publish.sh public ably/repository-audit-report
+          rm -fv ssh-private-key.pem
