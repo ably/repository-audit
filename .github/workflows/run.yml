@@ -35,7 +35,7 @@ jobs:
 
       - name: Publish Report
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.INTERNAL_REPORT_REPOSITORY_SSH_KEY }}
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh-private-key.pem
           chmod 400 ssh-private-key.pem

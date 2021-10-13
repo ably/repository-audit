@@ -123,7 +123,7 @@ The [run workflow](.github/workflows/run.yml) publishes updates to the report as
 [ably/repository-audit-report-internal](https://github.com/ably/repository-audit-report-internal)
 (private, only visible to teams within the `ably` org).
 
-In order to do this it uses the `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY` secret.
+In order to do this it uses the `INTERNAL_REPORT_REPOSITORY_SSH_KEY` secret.
 
 Creation and installation of a deploy key involves the following steps:
 
@@ -169,7 +169,7 @@ and click 'New repository secret'.
 
 Paste your clipboard contents into 'Value'.
 
-Provide the name expected by the workflow into 'Name': `ABLY_REPOSITORY_AUDIT_REPORT_SSH_KEY`
+Provide the name expected by the workflow into 'Name': `INTERNAL_REPORT_REPOSITORY_SSH_KEY`
 
 #### 4. Cleanup locally
 
