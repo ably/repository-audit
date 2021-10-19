@@ -39,6 +39,9 @@ async function audit() {
 
   const installationsYaml = await fs.promises.readFile('installations.yml', 'utf8');
   const installations = YAML.parse(installationsYaml);
+  if (!installations) {
+    throw new Error('Failed to parse installations YAML. Is the file empty?');
+  }
   const orgNames = Object.getOwnPropertyNames(installations).sort();
   const orgCount = orgNames.length;
   if (orgCount < 1) {
