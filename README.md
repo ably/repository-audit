@@ -100,7 +100,7 @@ This tool also requires the following to be available in the process' environmen
 - **`APP_ID`**: Number. The 'App ID' available under 'About' in 'General' settings for the GitHub App.
 - **`APP_CLIENT_ID`**: String. The 'Client ID' available under 'About' in 'General' settings for the GitHub App.
 - **`APP_CLIENT_SECRET`**: String. A 'Client secret' generated under 'Client secrets' in 'General' settings for the GitHub App.
-- **`APP_INSTALLATION_ID_ABLY`**: Number. The `installation_id` for the GitHub App within the `ably` org, available in the browser's address bar (end of URL with prefix `https://github.com/organizations/ably/settings/installations/`) if you click 'Configure' under 'Installed GitHub Apps` in org settings.
+- **`ORG_INSTALLATION_IDS`**: String, [YAML](http://yaml.org/) formatted. The `installation_id`(s) for the GitHub App within the org(s) that it has been installed into. See [Org Installations](#org-installations) for details.
 
 ## Miscellaneous Notes
 
@@ -182,3 +182,18 @@ Delete the key pair from your local workstation:
 rm /tmp/ably-deploy-key
 rm /tmp/ably-deploy-key.pub
 ```
+
+### Org Installations
+
+These are available, for an org into which the GitHub App associated with this tool has been installed, from the browser's address bar (end of URL with prefix `https://github.com/organizations/ORG-NAME/settings/installations/`) if you click 'Configure' under 'Installed GitHub Apps` in org settings.
+
+At runtime the tool looks for a file named `installations.yml`, whose contents must contain one or more orgs alongisde their installation ids.
+For example (mock installation ids):
+
+```yml
+ably: 123
+ably-labs: 456
+ably-forks: 789
+```
+
+This file is created by the [rehearse](.github/workflows/rehearse.yml) and [run](.github/workflows/run.yml) workflows from the `ORG_INSTALLATION_IDS` repository secret.
