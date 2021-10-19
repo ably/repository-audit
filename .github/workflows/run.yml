@@ -27,10 +27,11 @@ jobs:
           APP_ID: ${{ secrets.APP_ID }}
           APP_CLIENT_ID: ${{ secrets.APP_CLIENT_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          APP_INSTALLATION_ID_ABLY: ${{ secrets.APP_INSTALLATION_ID_ABLY }}
+          ORG_INSTALLATION_IDS: ${{ secrets.ORG_INSTALLATION_IDS }}
         run: |
           npm ci
           echo "$APP_PRIVATE_KEY" > app-private-key.pem
+          echo "$ORG_INSTALLATION_IDS" > installations.yml
           node .
 
       - name: Publish Internal Report
