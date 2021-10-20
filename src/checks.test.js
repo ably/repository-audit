@@ -43,20 +43,6 @@ describe('default branch name', () => {
   });
 });
 
-describe('result string values', () => {
-  it('pass is pass', () => {
-    expect(PASS).toBe('pass');
-  });
-
-  it('warn is warn', () => {
-    expect(WARN).toBe('warn');
-  });
-
-  it('fail is fail', () => {
-    expect(FAIL).toBe('fail');
-  });
-});
-
 describe('result emoji values', () => {
   it('pass is green circle', () => {
     expect((new Result(PASS)).emoji).toBe(':green_circle:');
