@@ -43,16 +43,16 @@ describe('default branch name', () => {
 });
 
 describe('result string values', () => {
-  it('pass is green', () => {
-    expect(PASS).toBe('green');
+  it('pass is pass', () => {
+    expect(PASS).toBe('pass');
   });
 
-  it('warn is yellow', () => {
-    expect(WARN).toBe('yellow');
+  it('warn is warn', () => {
+    expect(WARN).toBe('warn');
   });
 
-  it('fail is red', () => {
-    expect(FAIL).toBe('red');
+  it('fail is fail', () => {
+    expect(FAIL).toBe('fail');
   });
 });
 

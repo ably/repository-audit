@@ -1,8 +1,8 @@
 const { isFalse, isTrue } = require('./strict');
 
-const PASS = 'green';
-const FAIL = 'red';
-const WARN = 'yellow';
+const PASS = 'pass';
+const FAIL = 'fail';
+const WARN = 'warn';
 
 class Result {
   /**
@@ -22,7 +22,17 @@ class Result {
    * See: https://api.github.com/emojis
    */
   get emoji() {
-    return `:${this.indication}_circle:`;
+    const { indication } = this;
+    let colour;
+    switch (indication) {
+      case PASS: colour = 'green'; break;
+      case WARN: colour = 'yellow'; break;
+      case FAIL: colour = 'red'; break;
+      default:
+        throw new Error(`Unrecognised indication "${indication}".`);
+    }
+
+    return `:${colour}_circle:`;
   }
 
   get isPass() {
