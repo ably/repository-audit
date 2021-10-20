@@ -4,6 +4,7 @@ const {
   PASS,
   FAIL,
   WARN,
+  indicationLabel,
 } = require('./checks');
 
 const repository = (data) => new Repository(data);
@@ -67,6 +68,20 @@ describe('result emoji values', () => {
 
   it('warn is yellow circle', () => {
     expect((new Result(WARN)).emoji).toBe(':yellow_circle:');
+  });
+});
+
+describe('indication label values', () => {
+  it('pass is Pass', () => {
+    expect(indicationLabel(PASS)).toBe('Pass');
+  });
+
+  it('fail is Fail', () => {
+    expect(indicationLabel(FAIL)).toBe('Fail');
+  });
+
+  it('warn is Warn', () => {
+    expect(indicationLabel(WARN)).toBe('Warn');
   });
 });
 

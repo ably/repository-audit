@@ -4,6 +4,8 @@ const PASS = 'pass';
 const FAIL = 'fail';
 const WARN = 'warn';
 
+const indicationLabel = (indication) => `${indication.charAt(0).toUpperCase()}${indication.substring(1)}`;
+
 class Result {
   /**
    * Create and initialise a Result object, indicating the result of a check.
@@ -191,4 +193,5 @@ module.exports = {
   PASS,
   FAIL,
   WARN,
+  indicationLabel,
 };
