@@ -187,7 +187,7 @@ rm /tmp/ably-deploy-key.pub
 
 These are available, for an org into which the GitHub App associated with this tool has been installed, from the browser's address bar (end of URL with prefix `https://github.com/organizations/ORG-NAME/settings/installations/`) if you click 'Configure' under 'Installed GitHub Apps` in org settings.
 
-At runtime the tool looks for a file named `installations.yml`, whose contents must contain one or more orgs alongisde their installation ids.
+At runtime the tool looks for a file named `installations.yml`, whose contents must contain one or more orgs alongside their installation ids.
 For example (mock installation ids):
 
 ```yml
