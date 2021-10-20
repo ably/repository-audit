@@ -5,6 +5,11 @@ const FAIL = 'fail';
 const WARN = 'warn';
 
 const indicationLabel = (indication) => `${indication.charAt(0).toUpperCase()}${indication.substring(1)}`;
+const indicationColours = {
+  [PASS]: 'green',
+  [WARN]: 'yellow',
+  [FAIL]: 'red',
+};
 
 class Result {
   /**
@@ -25,15 +30,8 @@ class Result {
    */
   get emoji() {
     const { indication } = this;
-    let colour;
-    switch (indication) {
-      case PASS: colour = 'green'; break;
-      case WARN: colour = 'yellow'; break;
-      case FAIL: colour = 'red'; break;
-      default:
-        throw new Error(`Unrecognised indication "${indication}".`);
-    }
-
+    const colour = indicationColours[indication];
+    if (!colour) throw new Error(`Unrecognised indication "${indication}".`);
     return `:${colour}_circle:`;
   }
 
