@@ -32,6 +32,8 @@ async function audit() {
   const github = new GitHub(process.env);
   const startDate = new Date();
 
+  const repositoriesQuery = await fs.promises.readFile('src/repositories.graphql', 'utf8');
+
   // Create output directory in standard location within working directory.
   // The expectation is that this tool is run from the root of the repository.
   const outputDirectoryPath = 'output';
@@ -52,7 +54,7 @@ async function audit() {
     const orgName = orgNames[i];
     const installationId = installations[orgName];
     // eslint-disable-next-line no-await-in-loop
-    await auditOrg(github, orgName, installationId, outputDirectoryPath);
+    await auditOrg(github, repositoriesQuery, orgName, installationId, outputDirectoryPath);
   }
 
   const endDate = new Date();
@@ -91,11 +93,12 @@ async function writeCommitMessage(github, startDate, endDate, outputDirectoryPat
  * Run the audit and generate the report, for a single GitHub org.
  *
  * @param {GitHub} github The GitHub environment.
+ * @param {string} repositoriesQuery The GraphQL query to run.
  * @param {string} orgName The GitHub org name.
  * @param {string} installationId The id of the GitHub App installation within this GitHub org.
  * @param {string} outputDirectoryPath The path to the output folder to write the report to.
  */
-async function auditOrg(github, orgName, installationId, outputDirectoryPath) {
+async function auditOrg(github, repositoriesQuery, orgName, installationId, outputDirectoryPath) {
   console.log(`Audit for '${orgName}' org:`);
   const privatePem = await fs.promises.readFile('app-private-key.pem', 'ascii');
 
@@ -114,51 +117,6 @@ async function auditOrg(github, orgName, installationId, outputDirectoryPath) {
       hook: auth.hook,
     },
   });
-
-  // The type of $previousEndCursor is explicitly `String`, not `String!`. This is because we intentionally supply
-  // a value of `null` on our first query.
-  const query = `query repositories($orgName: String!, $previousEndCursor: String) {
-    organization(login: $orgName) {
-      repositories(first: 100, after: $previousEndCursor) {
-        nodes {
-          name
-          hasIssuesEnabled
-          hasProjectsEnabled
-          hasWikiEnabled
-          forkingAllowed
-          deleteBranchOnMerge
-          rebaseMergeAllowed
-          squashMergeAllowed
-          mergeCommitAllowed
-          autoMergeAllowed
-          defaultBranchRef {
-            name
-          }
-          visibility
-          branchProtectionRules(first: 100) {
-            nodes {
-              requiredApprovingReviewCount
-              requiresApprovingReviews
-              requiresConversationResolution
-              requiresStatusChecks
-              requiresStrictStatusChecks
-              restrictsPushes
-              pattern
-              allowsDeletions
-              allowsForcePushes
-            }
-            pageInfo {
-              hasNextPage
-            }
-          }
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
-      }
-    }
-  }`;
 
   // Keys define check names and Values define their descriptions.
   const checkDescriptions = {
@@ -183,7 +141,7 @@ async function auditOrg(github, orgName, installationId, outputDirectoryPath) {
     queryCount += 1;
     console.log(`\tExecuting Query #${queryCount}...`);
     const variables = { orgName, previousEndCursor };
-    const { organization } = await graphqlWithAuth(query, variables); // eslint-disable-line no-await-in-loop
+    const { organization } = await graphqlWithAuth(repositoriesQuery, variables); // eslint-disable-line no-await-in-loop
 
     const repositoryNodes = organization.repositories.nodes;
     repositoryNodes.forEach((repository) => {
