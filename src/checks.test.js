@@ -4,6 +4,7 @@ const {
   PASS,
   FAIL,
   WARN,
+  indicationLabel,
 } = require('./checks');
 
 const repository = (data) => new Repository(data);
@@ -42,20 +43,6 @@ describe('default branch name', () => {
   });
 });
 
-describe('result string values', () => {
-  it('pass is green', () => {
-    expect(PASS).toBe('green');
-  });
-
-  it('warn is yellow', () => {
-    expect(WARN).toBe('yellow');
-  });
-
-  it('fail is red', () => {
-    expect(FAIL).toBe('red');
-  });
-});
-
 describe('result emoji values', () => {
   it('pass is green circle', () => {
     expect((new Result(PASS)).emoji).toBe(':green_circle:');
@@ -67,6 +54,20 @@ describe('result emoji values', () => {
 
   it('warn is yellow circle', () => {
     expect((new Result(WARN)).emoji).toBe(':yellow_circle:');
+  });
+});
+
+describe('indication label values', () => {
+  it('pass is Pass', () => {
+    expect(indicationLabel(PASS)).toBe('Pass');
+  });
+
+  it('fail is Fail', () => {
+    expect(indicationLabel(FAIL)).toBe('Fail');
+  });
+
+  it('warn is Warn', () => {
+    expect(indicationLabel(WARN)).toBe('Warn');
   });
 });
 

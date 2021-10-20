@@ -5,6 +5,12 @@ const { graphql } = require('@octokit/graphql');
 const YAML = require('yaml');
 const MarkdownWriter = require('./markdown').Writer;
 const RepositoryChecks = require('./checks').Repository;
+const {
+  PASS,
+  WARN,
+  FAIL,
+  indicationLabel,
+} = require('./checks');
 const { GitHub } = require('./github');
 
 require('dotenv').config();
@@ -183,6 +189,28 @@ async function auditOrg(github, repositoriesQuery, orgName, installationId, outp
     return [interactiveName].concat(resultCells);
   }
 
+  /**
+   * Renders the content for the table row summarising check result totals for a check indication.
+   *
+   * @param {string} indication The check result indication (PASS, WARN, FAIL).
+   * @param {string} repositoryNames The repositories to include in this summary.
+   * @returns {string[]} Markdown-formatted content for this cells in this row.
+   */
+  function summaryCells(indication, repositoryNames) {
+    const resultCells = checkCodes.map((code) => {
+      let count = 0;
+      repositoryNames.forEach((name) => {
+        const results = checkResults.get(name);
+        const result = results[code];
+        if (result.indication === indication) {
+          count += 1;
+        }
+      });
+      return `${count}`;
+    });
+    return [indicationLabel(indication)].concat(resultCells);
+  }
+
   const interactiveCodes = checkCodes.map((code) => `[${code}](#check-${code.toLowerCase()})`);
   const resultHeaderCells = ['Repository'].concat(interactiveCodes);
   const fileName = `${orgName}.md`;
@@ -213,6 +241,11 @@ async function auditOrg(github, repositoriesQuery, orgName, installationId, outp
     repositoryNames.sort().forEach((name) => {
       md.tableBodyLine(repositoryResultCells(name));
     });
+    md.tableBodyLine(summaryCells(PASS, repositoryNames));
+    md.tableBodyLine(summaryCells(WARN, repositoryNames));
+    md.tableBodyLine(summaryCells(FAIL, repositoryNames));
+
+    md.line(`Repository Count: ${repositoryNames.length}`, true);
 
     md.h(2, 'Checks');
     checkCodes.forEach((code) => {
