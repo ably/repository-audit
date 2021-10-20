@@ -72,6 +72,17 @@ describe('branch', () => {
     expect(new GitHub(env).branch).toBe('main');
   });
 
+  it('is populated when GitHub environment for "workflow_dispatch" event is available', () => {
+    // see: https://github.com/ably/repository-audit/issues/40
+    // Assuming that GITHUB_REF is `refs/heads/main` for scheduled runs on the default branch (assuming the default branch is `main`)
+    const env = {
+      GITHUB_REF: 'refs/heads/main',
+      GITHUB_EVENT_NAME: 'workflow_dispatch',
+    };
+
+    expect(new GitHub(env).branch).toBe('main');
+  });
+
   it('fails if the GitHub environment is available but the event name is not recognised', () => {
     const badEnv = {
       GITHUB_REF: 'foo',
