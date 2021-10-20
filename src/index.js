@@ -245,6 +245,8 @@ async function auditOrg(github, repositoriesQuery, orgName, installationId, outp
     md.tableBodyLine(summaryCells(WARN, repositoryNames));
     md.tableBodyLine(summaryCells(FAIL, repositoryNames));
 
+    md.line(`Repository Count: ${repositoryNames.length}`, true);
+
     md.h(2, 'Checks');
     checkCodes.forEach((code) => {
       md.h(3, `Check: ${code}`);
