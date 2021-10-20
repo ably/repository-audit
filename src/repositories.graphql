@@ -1,0 +1,44 @@
+# The type of $previousEndCursor is explicitly `String`, not `String!`.
+# This is because we intentionally supply a value of `null` on our first query.
+query repositories($orgName: String!, $previousEndCursor: String) {
+  organization(login: $orgName) {
+    repositories(first: 100, after: $previousEndCursor) {
+      nodes {
+        name
+        hasIssuesEnabled
+        hasProjectsEnabled
+        hasWikiEnabled
+        forkingAllowed
+        deleteBranchOnMerge
+        rebaseMergeAllowed
+        squashMergeAllowed
+        mergeCommitAllowed
+        autoMergeAllowed
+        defaultBranchRef {
+          name
+        }
+        visibility
+        branchProtectionRules(first: 100) {
+          nodes {
+            requiredApprovingReviewCount
+            requiresApprovingReviews
+            requiresConversationResolution
+            requiresStatusChecks
+            requiresStrictStatusChecks
+            restrictsPushes
+            pattern
+            allowsDeletions
+            allowsForcePushes
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}
