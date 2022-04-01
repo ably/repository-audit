@@ -134,7 +134,7 @@ class Repository {
     // WARN for Ideals
     emit = (description) => results.add(warn(description));
     if (isFalse(rule.requiresApprovingReviews)) emit('Does not require reviewer approval.');
-    if (rule.requiredApprovingReviewCount < 2) emit('Required approving reviewer count is too low.');
+    if (rule.requiredApprovingReviewCount < 1) emit('Required approving reviewer count is too low.');
     if (isFalse(rule.requiresConversationResolution)) emit('Does not require conversations to be resolved before merging.');
     if (isFalse(rule.requiresStatusChecks)) emit('Does not require status checks to pass.');
     if (isFalse(rule.requiresStrictStatusChecks)) emit('Does not require branches to be up to date before merging.');
