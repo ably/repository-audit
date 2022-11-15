@@ -71,6 +71,107 @@ describe('indication label values', () => {
   });
 });
 
+describe('features', () => {
+  it('returns pass if issue is enabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(PASS);
+  });
+
+  it('returns fail if issue is disabled', () => {
+    expect(repository({
+      hasIssuesEnabled: false,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(FAIL);
+  });
+
+  it('returns pass if projects is disabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(PASS);
+  });
+
+  it('returns fail if projects is enabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: true,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(FAIL);
+  });
+
+  it('returns pass if wiki is disabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(PASS);
+  });
+
+  it('returns fail if wiki is enabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: true,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(FAIL);
+  });
+
+  it('returns fail if forking is private and enabled', () => {
+    expect(repository({
+      hasIssuesEnabled: false,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: true,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(FAIL);
+  });
+
+  it('returns pass if forking is private and disabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PRIVATE',
+    }).features().indication).toBe(PASS);
+  });
+
+  it('returns fail if forking is public and disabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: false,
+      visibility: 'PUBLIC',
+    }).features().indication).toBe(FAIL);
+  });
+
+  it('returns pass if forking is public and enabled', () => {
+    expect(repository({
+      hasIssuesEnabled: true,
+      hasProjectsEnabled: false,
+      hasWikiEnabled: false,
+      forkingAllowed: true,
+      visibility: 'PUBLIC',
+    }).features().indication).toBe(PASS);
+  });
+});
+
 test.todo('branchProtectionRuleForDefaultBranch');
-test.todo('features');
 test.todo('mergeButton');
