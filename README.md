@@ -224,6 +224,6 @@ To run the tests:
 
     npm test
 
-To generate the report:
+To generate the reports:
 
     node .
