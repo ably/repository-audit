@@ -197,3 +197,33 @@ ably-forks: 789
 ```
 
 This file is created by the [rehearse](.github/workflows/rehearse.yml) and [run](.github/workflows/run.yml) workflows from the `ORG_INSTALLATION_IDS` repository secret.
+
+### Docker setup for local development
+
+This development environment use a [node official image](https://hub.docker.com/_/node).
+
+Please be sure to have the following files in the root directory to make the project work locally:
+
+* `.env` populated with environnement variables (see [Runtime Requirements](#runtime-requirements))
+* `app-private-key.pem` (see [Runtime Requirements](#runtime-requirements))
+* `installations.yml` (see [Org Installations](#org-installations))
+
+Build the image:
+
+    docker-compose build
+
+Start the environment:
+
+    docker-compose run node bash
+
+Then install the dependencies:
+
+    npm install
+
+To run the tests:
+
+    npm test
+
+To generate the reports:
+
+    node .

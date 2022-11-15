@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  node:
+    build:
+      context: .
+    image: node:slim
+    volumes:
+      - .:/srv
+    working_dir: /srv
